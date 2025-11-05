@@ -81,11 +81,4 @@ public class Batalla {
         System.out.println(villano.GetApodo() + " → Salud: " + villano.GetSalud());
         System.out.println("--------------------------------------------------");
     }
-      public Personaje getHeroe() {
-        return heroe;
-    }
-
-    public Personaje getVillano() {
-        return villano;
-    }
 }

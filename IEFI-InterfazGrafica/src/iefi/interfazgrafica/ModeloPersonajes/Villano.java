@@ -9,14 +9,14 @@ import iefi.interfazgrafica.ModeloArmas.HozOxidada;
 import iefi.interfazgrafica.ModeloArmas.HozVenenosa;
 
 
-/**
- *
- * @author Usuario
- */
 public class Villano extends Personaje {
 
     private String[] armasInvocadas = new String[3];
     private int habilidadesUsadas;
+    
+    public Villano() {
+        super();
+    }
     
     public Villano(int salud, int defensa, int ataque) {
         super(salud, defensa, ataque);

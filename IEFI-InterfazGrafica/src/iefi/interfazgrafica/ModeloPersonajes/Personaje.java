@@ -29,35 +29,38 @@ public abstract class Personaje {
         this.ataque = ataque;
     }
     
-    public void ingresarApodo(){
-        this.apodo = validarApodo();
+    public void crearPersonaje(String apodo, int salud, int defensa, int ataque, int bendicion) {
+    // Validar apodo usando el método ya existente
+    this.apodo = validarApodo(apodo);
+
+    // Asignar el resto de los atributos
+    this.salud = salud;
+    this.defensa = defensa;
+    this.ataque = ataque;
+    this.bendicion = bendicion;
     }
     
-    public String validarApodo() {
-        Scanner sc = new Scanner(System.in);
-        String apodo;
-        while (true) {
-            System.out.print("Ingrese un apodo (3 a 10 caracteres, solo letras y espacios): ");
-            apodo = sc.nextLine().trim();
-
-            // Solo letras y espacios
-            if (!apodo.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
-                System.out.println("❌ El apodo solo puede contener letras y espacios.");
-                continue;
-            }
-
-            // Longitud 3–10
-            if (apodo.length() < 3 || apodo.length() > 10) {
-                System.out.println("❌ El apodo debe tener entre 3 y 10 caracteres.");
-                continue;
-            }
-
-            // Si pasó todas las validaciones, salimos del bucle
-            break;
-        }
-
-        return apodo;
+    public void ingresarApodo(String apodo){
+        this.apodo = validarApodo(apodo);    
     }
+    
+    public String validarApodo(String apodo) {
+    if (apodo == null || apodo.trim().isEmpty()) {
+        throw new IllegalArgumentException("El apodo no puede estar vacío.");
+    }
+
+    apodo = apodo.trim();
+
+    if (!apodo.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+        throw new IllegalArgumentException("El apodo solo puede contener letras y espacios.");
+    }
+
+    if (apodo.length() < 3 || apodo.length() > 10) {
+        throw new IllegalArgumentException("El apodo debe tener entre 3 y 10 caracteres.");
+    }
+
+    return apodo;
+}
     
     public String GetApodo(){
         return this.apodo;

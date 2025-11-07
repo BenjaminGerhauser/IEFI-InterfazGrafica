@@ -4,6 +4,8 @@
  */
 package iefi.interfazgrafica;
 
+import vistaConfiguracion.frmVistaConfiguracion;
+
 /**
  *
  * @author Benja
@@ -14,7 +16,10 @@ public class IEFIInterfazGrafica {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            frmVistaConfiguracion ventana = new frmVistaConfiguracion();
+            ventana.setVisible(true);
+            ventana.setLocationRelativeTo(null);
+        });
     }
-    
 }

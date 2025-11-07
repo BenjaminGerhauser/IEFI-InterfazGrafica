@@ -9,6 +9,8 @@ import iefi.interfazgrafica.ModeloPersonajes.Villano;
 import iefi.interfazgrafica.controladores.ControladorPersonajes;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
+import vistaBatalla.frmBatalla;
 
 /**
  *
@@ -24,6 +26,11 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
      */
     public frmVistaConfiguracion() {
         initComponents();
+
+        numBnedicion.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        numDenfensa.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        numFuerza.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        numVida.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
     }
 
     /**
@@ -200,6 +207,11 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
         getContentPane().add(lblPersonajes, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, 90, -1));
 
         btnIniciar.setText("Iniciar Batalla");
+        btnIniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 130, 30));
 
         btnCargar.setText("Cargar Batalla");
@@ -252,27 +264,29 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
     private void btnEliminarPersonajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPersonajeActionPerformed
         String seleccionado = lsPersonajes.getSelectedValue();
 
-    if (seleccionado == null) {
-        JOptionPane.showMessageDialog(this,
-            "Selecciona un personaje para eliminar.",
-            "Aviso", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (seleccionado == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecciona un personaje para eliminar.",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    int opcion = JOptionPane.showConfirmDialog(this, 
-        "¿Seguro que querés eliminar este personaje?",
-        "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que querés eliminar este personaje?",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-    if (opcion != JOptionPane.YES_OPTION) return;
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
 
-    // Detectar por texto en vez de índice
-    if (seleccionado.contains("Héroe") || seleccionado.contains("Heroe")) {
-        ctrlHeroe = null;
-    } else if (seleccionado.contains("Villano")) {
-        ctrlVillano = null;
-    }
+        // Detectar por texto en vez de índice
+        if (seleccionado.contains("Héroe") || seleccionado.contains("Heroe")) {
+            ctrlHeroe = null;
+        } else if (seleccionado.contains("Villano")) {
+            ctrlVillano = null;
+        }
 
-    actualizarLista();
+        actualizarLista();
     }//GEN-LAST:event_btnEliminarPersonajeActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -286,6 +300,26 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
             System.exit(0);
         }
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+        // Verificar que ambos personajes existan
+        if (ctrlHeroe == null || ctrlVillano == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Debés crear un Héroe y un Villano antes de iniciar la batalla.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int cantidadBatallas = Integer.parseInt(cbCantidadBatallas.getSelectedItem().toString());
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            this.setVisible(false);
+            frmBatalla ventana = new frmBatalla(ctrlHeroe, ctrlVillano, cantidadBatallas);
+            ventana.setVisible(true);
+            ventana.setLocationRelativeTo(null);
+        });
+    }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void actualizarLista() {
         DefaultListModel<String> modeloLista = new DefaultListModel<>();

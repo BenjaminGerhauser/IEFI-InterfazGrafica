@@ -66,6 +66,18 @@ public abstract class Personaje {
         return this.apodo;
     }
     
+    public int GetDefensa(){
+        return this.defensa;
+    }
+    
+    public int GetAtaque(){
+        return this.ataque;
+    }
+    
+    public int GetBendicion(){
+        return this.bendicion;
+    }
+    
     public void curarse(int curacion){
         this.salud += curacion;
     }
@@ -83,7 +95,7 @@ public abstract class Personaje {
     }
     
     public void incrementarDefensa(int incremento){
-        this.defensa += defensa;
+        this.defensa += incremento;
     }
     
     public void incrementarAtaque(int incremento){

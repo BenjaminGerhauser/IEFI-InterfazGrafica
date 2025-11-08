@@ -3,27 +3,47 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package iefi.interfazgrafica.ModeloArmas;
-import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 
+import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 
 /**
  *
  * @author Alumno
  */
-public class EspadaCelestial extends Arma{
-    public EspadaCelestial(Personaje heroe){
+public class EspadaCelestial extends Arma {
+
+    public EspadaCelestial(Personaje heroe) {
         super("Espada Celestial", 10);
         heroe.incrementarAtaque(danioExtra);
-        System.out.println(this.nombre + " brinda " + danioExtra + " de puntos de ataque.");
+        mensajeEfecto = (this.nombre + " brinda " + danioExtra + " de puntos de ataque.\n");
     }
-    
+
     @Override
-    public void usarEfectoEspecial(Personaje portador){
+    public String usarEfectoEspecial(Personaje portador) {
+        StringBuilder mensaje = new StringBuilder();
+
+        // 🔹 Mostrar mensaje inicial solo la primera vez
+        if (!efectoInicialAplicado) {
+            mensaje.append(mensajeEfecto);
+            efectoInicialAplicado = true;
+        }
+
+        // 🔹 Efecto especial (siempre se ejecuta)
         int curacion = 8;
         int incrementoDefensa = 3;
+
         portador.curarse(curacion);
         portador.incrementarDefensa(incrementoDefensa);
-        System.out.println(this.nombre + " cura " + curacion + " puntos de vida.");
-        System.out.println(this.nombre + " incrementa defensa en: " + incrementoDefensa + " puntos.");
+
+        mensaje.append(this.nombre)
+                .append(" cura ")
+                .append(curacion)
+                .append(" puntos de vida.\n")
+                .append(this.nombre)
+                .append(" incrementa defensa en ")
+                .append(incrementoDefensa)
+                .append(" puntos.\n");
+
+        return mensaje.toString();
     }
 }

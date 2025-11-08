@@ -14,6 +14,18 @@ public class ControladorBatalla {
     private Personaje heroe;
     private Personaje villano;
 
+    public Personaje getHeroe() {
+        return this.heroe;
+    }
+
+    public Personaje getVillano() {
+        return this.villano;
+    }
+
+    public Batalla getBatalla() {
+        return this.batalla;
+    }
+
     public ControladorBatalla(Personaje heroe, Personaje villano, frmBatalla vista) {
         this.batalla = new Batalla(heroe, villano);
         this.heroe = heroe;
@@ -24,7 +36,7 @@ public class ControladorBatalla {
     public void siguienteTurno(JTextArea txtEventos, JButton siguienteTurno, JButton siguienteBatalla) {
         batalla.siguienteTurno(txtEventos);
         vista.actualizarEstado(batalla);
-        
+
         // Chequeamos si hay un ganador
         String ganador = batalla.chequearVictoria();
         if (!batalla.getHeroe().estaVivo() || !batalla.getVillano().estaVivo()) {

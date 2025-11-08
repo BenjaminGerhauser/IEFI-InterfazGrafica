@@ -35,10 +35,10 @@ public class Villano extends Personaje {
         String mensaje = "";
         mensaje += invocarArma() + "\n";
 
-        if (this.habilidad != null) {
+        if (this.habilidad != null && this.habilidadPermitida) {
             if (this.habilidad.estaDisponible()) {
-                this.habilidad.ejecutar(villano, heroe);
-                return "";
+                mensaje += this.habilidad.ejecutar(villano, heroe) + "\n";
+                return mensaje;
             } else {
                 mensaje += ("❌ La habilidad " + this.habilidad.nombre + " aún no está lista. Restan " + this.habilidad.turnosCarga + " turnos.\n");
                 this.habilidad.pasarTurno();
@@ -47,7 +47,7 @@ public class Villano extends Personaje {
 
         if (arma != null) {
             mensaje += ("☠️ " + GetApodo() + " activa el efecto especial de " + arma.getNombre() + "!\n");
-            arma.usarEfectoEspecial(this);
+            mensaje += arma.usarEfectoEspecial(this) + "\n";
         }
 
         int danoBase = this.ataque - heroe.defensa;
@@ -67,7 +67,7 @@ public class Villano extends Personaje {
         }
         mensaje += ("⚔️ " + this.GetApodo() + " ataca a " + heroe.GetApodo() + " causando " + danoBase + " de daño.\n");
 
-        cargarBendicion();
+        mensaje += cargarBendicion() + "\n";
         return mensaje;
     }
 
@@ -78,7 +78,7 @@ public class Villano extends Personaje {
         // 🌀 Habilidad suprema
         if (bendicion >= 100 && habilidad == null) {
             mensajeArma += ("🌑 " + GetApodo() + " ha alcanzado el 100% de corrupción... ¡Puede invocar al Leviatán!\n");
-            cargarHabilidad();
+            mensajeArma += cargarHabilidad() + "\n";
             habilidadesUsadas++;
             return "";
         }
@@ -101,21 +101,29 @@ public class Villano extends Personaje {
     }
 
     @Override
-    public void cargarBendicion() {
+    public String cargarBendicion() {
+        
+        String mensajeBendicion = "";
+        
         int incremento = 10;
         bendicion += incremento;
         if (bendicion > 100) {
             bendicion = 100;
         }
 
-        System.out.println("🩸 " + GetApodo() + " incrementa su energía del vacío a " + bendicion + "%.");
+        mensajeBendicion += ("🩸 " + GetApodo() + " incrementa su energía del vacío a " + bendicion + "%.\n");
+        
+        return mensajeBendicion;
     }
 
     @Override
-    public void cargarHabilidad() {
+    public String cargarHabilidad() {
+        String mensajeHabilidad = "";
         if (bendicion >= 100) {
             habilidad = new LeviatanDelVacio();
-            System.out.println("🌌 ¡" + GetApodo() + " ha invocado al " + habilidad.nombre + "!");
+            mensajeHabilidad += ("🌌 ¡" + GetApodo() + " ha invocado al " + habilidad.nombre + "!\n");
         }
+        
+        return mensajeHabilidad;
     }
 }

@@ -34,10 +34,10 @@ public class Heroe extends Personaje {
         String mensaje = "";
         mensaje += invocarArma() + "\n";
         
-        if (this.habilidad != null) {
+        if (this.habilidad != null && this.habilidadPermitida) {
             if(this.habilidad.estaDisponible()){
-                this.habilidad.ejecutar(heroe, villano);
-                return "";
+                mensaje += this.habilidad.ejecutar(heroe, villano) + "\n";
+                return mensaje;
             }else{
                 mensaje += ("❌ La habilidad " + this.habilidad.nombre + " aún no está lista.\n");
                 this.habilidad.pasarTurno();
@@ -46,7 +46,7 @@ public class Heroe extends Personaje {
 
         if (arma != null) {
             mensaje +=("✨ " + GetApodo() + " utiliza el efecto especial de " + arma.getNombre() + "!\n");
-            arma.usarEfectoEspecial(this);
+            mensaje += arma.usarEfectoEspecial(this) + "\n";
         }
 
         int danoBase = this.ataque - villano.defensa;
@@ -65,7 +65,7 @@ public class Heroe extends Personaje {
             villano.salud = 0;
         }
         mensaje +=("🗡️ " + this.GetApodo() + " ataca a " + villano.GetApodo() + " causando " + danoBase + " de daño.\n");
-        cargarBendicion();
+        mensaje+= cargarBendicion() + "\n";
         
         return mensaje;
 
@@ -76,7 +76,7 @@ public class Heroe extends Personaje {
         String mensajeArma = "";
         if (bendicion >= 100 && habilidad == null) {
             mensajeArma += ("⚡ " + GetApodo() + " ha alcanzado el 100% de bendición. ¡Puede usar su habilidad suprema!\n");
-            cargarHabilidad();
+            mensajeArma += cargarHabilidad() + "\n";
             habilidadesUsadas++;
             return ""; // 👈 no seguimos con armas si ya tiene habilidad
         }
@@ -102,21 +102,31 @@ public class Heroe extends Personaje {
     }
 
     @Override
-    public void cargarBendicion() {
+    public String cargarBendicion() {
+        
+        String mensajeBendicion = "";
+        
         int incremento = 10;
         bendicion += incremento;
         if (bendicion > 100) {
             bendicion = 100;
         }
 
-        System.out.println("✨ " + GetApodo() + " aumenta su bendición a " + bendicion + "%.");
+        mensajeBendicion += ("✨ " + GetApodo() + " aumenta su bendición a " + bendicion + "%.\n");
+        
+        return mensajeBendicion;
     }
 
     @Override
-    public void cargarHabilidad() {
+    public String cargarHabilidad() {
+        
+        String mensajeHabilidad = "";
+        
         if (bendicion >= 100) {
             habilidad = new CastigoBendito();
-            System.out.println("🌟 ¡" + GetApodo() + " desbloqueó su habilidad suprema: " + habilidad.nombre + "!");
+            mensajeHabilidad += ("🌟 ¡" + GetApodo() + " desbloqueó su habilidad suprema: " + habilidad.nombre + "!\n");
         }
+        
+        return mensajeHabilidad;
     }
 }

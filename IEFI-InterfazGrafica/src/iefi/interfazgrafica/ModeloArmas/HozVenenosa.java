@@ -13,17 +13,33 @@ public class HozVenenosa extends Arma{
     public HozVenenosa(Personaje villano) {
         super("Hoz Venenosa", 6); // Daño base mayor que la espada
         villano.incrementarAtaque(danioExtra);
-        System.out.println(this.nombre + " brinda " + danioExtra + " de puntos de ataque.");
+        mensajeEfecto = (this.nombre + " brinda " + danioExtra + " de puntos de ataque.\n");
     }
 
     @Override
-    public void usarEfectoEspecial(Personaje portador) {
-        int incrementoAtaque = 5;  // aumento por el filo
-        int incrementoVeneno = 4;  // aumento adicional “por veneno”
+    public String usarEfectoEspecial(Personaje portador) {
+        StringBuilder mensaje = new StringBuilder();
 
+        // 🔹 Mostrar mensaje inicial solo la primera vez
+        if (!efectoInicialAplicado) {
+            mensaje.append(mensajeEfecto);
+            efectoInicialAplicado = true;
+        }
+
+        // 🔹 Efecto especial (siempre)
+        int incrementoAtaque = 5;
+        int incrementoVeneno = 4;
         portador.incrementarAtaque(incrementoAtaque + incrementoVeneno);
 
-        System.out.println(this.nombre + " incrementa ataque en " + incrementoAtaque + " puntos.");
-        System.out.println(this.nombre + " potencia su filo venenoso aumentando " + incrementoVeneno + " puntos extra de ataque.");
+        mensaje.append(this.nombre)
+               .append(" incrementa ataque en ")
+               .append(incrementoAtaque)
+               .append(" puntos.\n")
+               .append(this.nombre)
+               .append(" potencia su filo venenoso aumentando ")
+               .append(incrementoVeneno)
+               .append(" puntos extra de ataque.\n");
+
+        return mensaje.toString();
     }
 }

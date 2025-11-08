@@ -24,18 +24,23 @@ public class Batalla {
         this.villano = villano;
     }
 
-    public int getTurno(){
+    public int getTurno() {
         return this.turno;
     }
-    
-    public Personaje getHeroe(){
+
+    public Personaje getHeroe() {
         return this.heroe;
     }
-    
-    public Personaje getVillano(){
+
+    public Personaje getVillano() {
         return this.villano;
     }
-    
+
+    public void reiniciarTurnos() {
+        this.turno = 1;
+        this.turnosEmpleados = 0;
+    }
+
     public void siguienteTurno(JTextArea txtEventos) {
         System.out.println("🔁 Turno " + turno + " ---------------------------");
 
@@ -58,7 +63,7 @@ public class Batalla {
 
     public String chequearVictoria() {
         String mensaje = "🏁 La batalla ha terminado.\n";
-        
+
         if (heroe.estaVivo() && !villano.estaVivo()) {
             mensaje += "🎉 ¡" + heroe.GetApodo() + " ha derrotado a " + villano.GetApodo() + " en " + turnosEmpleados + " turnos!";
         } else if (villano.estaVivo() && !heroe.estaVivo()) {
@@ -66,7 +71,7 @@ public class Batalla {
         } else {
             mensaje += "🤝 Ambos han caído al mismo tiempo. ¡Empate!";
         }
-        
+
         return mensaje;
     }
 

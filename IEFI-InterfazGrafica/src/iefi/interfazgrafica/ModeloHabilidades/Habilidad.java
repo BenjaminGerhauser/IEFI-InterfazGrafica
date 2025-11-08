@@ -11,6 +11,7 @@ import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 public abstract class Habilidad {
     public String nombre;
     public int turnosCarga;
+    protected String mensajeHabilidad;
 
     public Habilidad(String nombre, int turnosCarga) {
         this.nombre = nombre;
@@ -21,7 +22,7 @@ public abstract class Habilidad {
         return turnosCarga <= 0;
     }
 
-    public abstract void ejecutar(Personaje lanzador, Personaje objetivo);
+    public abstract String ejecutar(Personaje lanzador, Personaje objetivo);
 
     public void pasarTurno() {
         if (turnosCarga > 0) {

@@ -5,6 +5,7 @@
 package vistaBatalla;
 
 import iefi.interfazgrafica.ModeloBatalla.Batalla;
+import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 import iefi.interfazgrafica.controladores.ControladorBatalla;
 import iefi.interfazgrafica.controladores.ControladorPersonajes;
 import java.awt.Color;
@@ -21,9 +22,21 @@ public class frmBatalla extends javax.swing.JFrame {
     private ControladorBatalla ctrlBatalla;
 
     private int batallaActual = 1;
+    private int cantidadBatallas = 1;
 
     private int vidaMaximaHeroe;
     private int vidaMaximaVillano;
+
+    // 🔹 Valores originales para reiniciar batallas
+    private int saludOriginalHeroe;
+    private int ataqueOriginalHeroe;
+    private int defensaOriginalHeroe;
+    private int bendicionOriginalHeroe;
+
+    private int saludOriginalVillano;
+    private int ataqueOriginalVillano;
+    private int defensaOriginalVillano;
+    private int bendicionOriginalVillano;
 
     /**
      * Creates new form frmBatalla
@@ -32,9 +45,14 @@ public class frmBatalla extends javax.swing.JFrame {
         initComponents();
     }
 
-    public frmBatalla(ControladorPersonajes ctrlHeroe, ControladorPersonajes ctrlVillano, int cantidadPartidas) {
+    public frmBatalla(ControladorPersonajes ctrlHeroe, ControladorPersonajes ctrlVillano, int cantidadPartidas, boolean habilidadPermitida) {
         initComponents();
 
+        this.cantidadBatallas = cantidadPartidas;
+        
+        ctrlHeroe.personaje.habilidadPermitida = habilidadPermitida;
+        ctrlVillano.personaje.habilidadPermitida = habilidadPermitida;
+        
         ctrlBatalla = new ControladorBatalla(ctrlHeroe.personaje, ctrlVillano.personaje, this);
 
         lblBatallaActual.setText("Batalla Actual: Partida " + batallaActual + "/" + cantidadPartidas);
@@ -61,8 +79,19 @@ public class frmBatalla extends javax.swing.JFrame {
         lblBendicionVillano.setText("Bendicion: " + String.valueOf(ctrlVillano.personaje.GetBendicion()));
         vidaMaximaVillano = ctrlVillano.personaje.GetSalud();
 
-        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla));
+        // ✅ Guardar valores originales de ambos personajes
+        saludOriginalHeroe = ctrlHeroe.personaje.GetSalud();
+        ataqueOriginalHeroe = ctrlHeroe.personaje.GetAtaque();
+        defensaOriginalHeroe = ctrlHeroe.personaje.GetDefensa();
+        bendicionOriginalHeroe = ctrlHeroe.personaje.GetBendicion();
 
+        saludOriginalVillano = ctrlVillano.personaje.GetSalud();
+        ataqueOriginalVillano = ctrlVillano.personaje.GetAtaque();
+        defensaOriginalVillano = ctrlVillano.personaje.GetDefensa();
+        bendicionOriginalVillano = ctrlVillano.personaje.GetBendicion();
+
+        // Acción de botón
+        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla));
     }
 
     private void actualizarColorBarra(JProgressBar barra, int vidaActual, int vidaMaxima) {
@@ -95,7 +124,7 @@ public class frmBatalla extends javax.swing.JFrame {
         lblVidaVillano.setText("Vida: " + vidaVillano);
         lblDefensaVillano.setText("Defensa: " + modelo.getVillano().GetDefensa());
         lblAtaqueVillano.setText("Ataque: " + modelo.getVillano().GetAtaque());
-        lblBendicionVillano.setText("Bendición: " + modelo.getVillano().GetBendicion());
+        lblBendicionVillano.setText("Energia del Vacio: " + modelo.getVillano().GetBendicion());
         actualizarColorBarra(pbVidaVillano, vidaVillano, vidaMaximaVillano);
     }
 
@@ -259,7 +288,7 @@ public class frmBatalla extends javax.swing.JFrame {
         jLabel6.setText("Villano");
 
         lblBendicionVillano.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblBendicionVillano.setText("Bendicion: xx");
+        lblBendicionVillano.setText("Energia del vacio: xx");
         lblBendicionVillano.setToolTipText("");
 
         lblApodoVillano.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -331,6 +360,11 @@ public class frmBatalla extends javax.swing.JFrame {
 
         btnSiguienteBatalla.setText("Siguiente Batalla");
         btnSiguienteBatalla.setEnabled(false);
+        btnSiguienteBatalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteBatallaActionPerformed(evt);
+            }
+        });
 
         btnSiguienteTurno.setText("Siguiente Turno");
 
@@ -353,12 +387,12 @@ public class frmBatalla extends javax.swing.JFrame {
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(282, 282, 282)
                 .addComponent(btnSiguienteTurno)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(btnSiguienteBatalla)
-                .addGap(301, 301, 301))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,12 +406,12 @@ public class frmBatalla extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSiguienteBatalla)
-                    .addComponent(btnSiguienteTurno))
-                .addContainerGap(8, Short.MAX_VALUE))
+                    .addComponent(btnSiguienteTurno)
+                    .addComponent(btnSiguienteBatalla))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -450,6 +484,65 @@ public class frmBatalla extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSiguienteBatallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteBatallaActionPerformed
+        // Verificar si quedan batallas por jugar
+        if (batallaActual < cantidadBatallas) {
+            batallaActual++;
+
+            // 🔹 Restaurar estadísticas originales del héroe
+            Personaje heroe = ctrlBatalla.getHeroe();
+            heroe.SetSalud(saludOriginalHeroe);
+            heroe.SetAtaque(ataqueOriginalHeroe);
+            heroe.SetDefensa(defensaOriginalHeroe);
+            heroe.SetBendicion(bendicionOriginalHeroe);
+            heroe.arma = null;
+            heroe.habilidad = null;
+
+            // 🔹 Restaurar estadísticas originales del villano
+            Personaje villano = ctrlBatalla.getVillano();
+            villano.SetSalud(saludOriginalVillano);
+            villano.SetAtaque(ataqueOriginalVillano);
+            villano.SetDefensa(defensaOriginalVillano);
+            villano.SetBendicion(bendicionOriginalVillano);
+            villano.arma = null;
+            villano.habilidad = null;
+
+            // 🔹 Reiniciar el modelo de batalla (turnos, contador, etc.)
+            ctrlBatalla.getBatalla().reiniciarTurnos();
+
+            // 🔹 Actualizar interfaz
+            lblBatallaActual.setText("Batalla Actual: Partida " + batallaActual + "/" + cantidadBatallas);
+            lblTurnoActual.setText("Turno actual: 1");
+
+            pbVidaHeroe.setMaximum(saludOriginalHeroe);
+            pbVidaVillano.setMaximum(saludOriginalVillano);
+            pbVidaHeroe.setValue(saludOriginalHeroe);
+            pbVidaVillano.setValue(saludOriginalVillano);
+
+            lblVidaHeroe.setText("Vida: " + saludOriginalHeroe);
+            lblVidaVillano.setText("Vida: " + saludOriginalVillano);
+            lblDefensaHeroe.setText("Defensa: " + defensaOriginalHeroe);
+            lblDefensaVillano.setText("Defensa: " + defensaOriginalVillano);
+            lblAtaqueHeroe.setText("Ataque: " + ataqueOriginalHeroe);
+            lblAtaqueVillano.setText("Ataque: " + ataqueOriginalVillano);
+            lblBendicionHeroe.setText("Bendición: " + bendicionOriginalHeroe);
+            lblBendicionVillano.setText("Energía del Vacío: " + bendicionOriginalVillano);
+
+            txtEventos.setText("🔄 ¡Comienza la Batalla " + batallaActual + " entre "
+                    + heroe.GetApodo() + " y " + villano.GetApodo() + "!\n");
+
+            // 🔹 Habilitar / deshabilitar botones
+            btnSiguienteTurno.setEnabled(true);
+            btnSiguienteBatalla.setEnabled(false);
+
+        } else {
+            // 🔹 Si ya se jugaron todas las batallas
+            txtEventos.append("\n🏁 Todas las batallas han finalizado.\n");
+            btnSiguienteBatalla.setEnabled(false);
+            btnSiguienteTurno.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnSiguienteBatallaActionPerformed
 
     /**
      * @param args the command line arguments

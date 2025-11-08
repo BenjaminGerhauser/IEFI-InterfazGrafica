@@ -261,6 +261,7 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="chbActivarAtaqueSupremo">
           <Properties>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Activar ataque supremo"/>
           </Properties>
         </Component>

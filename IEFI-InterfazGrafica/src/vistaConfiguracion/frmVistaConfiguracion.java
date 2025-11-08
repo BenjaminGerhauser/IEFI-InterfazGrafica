@@ -117,6 +117,7 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
 
         cbCantidadBatallas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "5" }));
 
+        chbActivarAtaqueSupremo.setSelected(true);
         chbActivarAtaqueSupremo.setText("Activar ataque supremo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -325,7 +326,7 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             this.setVisible(false);
-            frmBatalla ventana = new frmBatalla(ctrlHeroe, ctrlVillano, cantidadBatallas);
+            frmBatalla ventana = new frmBatalla(ctrlHeroe, ctrlVillano, cantidadBatallas, chbActivarAtaqueSupremo.isSelected());
             ventana.setVisible(true);
             ventana.setLocationRelativeTo(null);
         });

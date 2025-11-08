@@ -20,6 +20,7 @@ public abstract class Personaje {
     public int bendicion = 0;
     public Arma arma;
     public Habilidad habilidad;
+    public boolean habilidadPermitida = true;
     
     public Personaje(){}
     
@@ -78,6 +79,22 @@ public abstract class Personaje {
         return this.bendicion;
     }
     
+    public void SetDefensa(int defensa){
+        this.defensa = defensa;
+    }
+    
+    public void SetAtaque(int ataque){
+        this.ataque = ataque;
+    }
+    
+    public void SetBendicion(int bendicion){
+        this.bendicion = bendicion;
+    }
+    
+    public void SetSalud(int salud){
+        this.salud = salud;
+    }
+    
     public void curarse(int curacion){
         this.salud += curacion;
     }
@@ -102,13 +119,13 @@ public abstract class Personaje {
         this.ataque += incremento;
     }
     
-    public void atacar(Personaje atacante, Personaje defensor){}
+    public String atacar(Personaje atacante, Personaje defensor){return "";}
     
-    public void invocarArma(){}
+    public String invocarArma(){return "";}
     
-    public void cargarHabilidad(){}
+    public String cargarHabilidad(){return "";}
     
-    public void cargarBendicion(){}
+    public String cargarBendicion(){return "";}
     
 }
 

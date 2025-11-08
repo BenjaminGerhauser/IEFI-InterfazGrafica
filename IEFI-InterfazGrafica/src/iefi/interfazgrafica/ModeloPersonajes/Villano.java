@@ -3,50 +3,51 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package iefi.interfazgrafica.ModeloPersonajes;
+
 import iefi.interfazgrafica.ModeloHabilidades.LeviatanDelVacio;
 import iefi.interfazgrafica.ModeloArmas.HozMortifera;
 import iefi.interfazgrafica.ModeloArmas.HozOxidada;
 import iefi.interfazgrafica.ModeloArmas.HozVenenosa;
 
-
 public class Villano extends Personaje {
 
     private String[] armasInvocadas = new String[3];
     private int habilidadesUsadas;
-    
+
     public Villano() {
         super();
     }
-    
+
     public Villano(int salud, int defensa, int ataque) {
         super(salud, defensa, ataque);
     }
 
-    public String[] getArmasInvocadas(){
+    public String[] getArmasInvocadas() {
         return armasInvocadas;
     }
-    public int getHabilidadesUsadas(){
+
+    public int getHabilidadesUsadas() {
         return habilidadesUsadas;
     }
-    
-    @Override
-    public void atacar(Personaje villano, Personaje heroe) {
 
-        invocarArma();
-        
-        if (this.habilidad != null) {
+    @Override
+    public String atacar(Personaje villano, Personaje heroe) {
+        String mensaje = "";
+        mensaje += invocarArma() + "\n";
+
+        if (this.habilidad != null && this.habilidadPermitida) {
             if (this.habilidad.estaDisponible()) {
-                this.habilidad.ejecutar(villano, heroe);
-                return;
+                mensaje += this.habilidad.ejecutar(villano, heroe) + "\n";
+                return mensaje;
             } else {
-                System.out.println("❌ La habilidad " + this.habilidad.nombre + " aún no está lista. Restan " + this.habilidad.turnosCarga + " turnos.");
+                mensaje += ("❌ La habilidad " + this.habilidad.nombre + " aún no está lista. Restan " + this.habilidad.turnosCarga + " turnos.\n");
                 this.habilidad.pasarTurno();
             }
         }
 
         if (arma != null) {
-            System.out.println("☠️ " + GetApodo() + " activa el efecto especial de " + arma.getNombre() + "!");
-            arma.usarEfectoEspecial(this); 
+            mensaje += ("☠️ " + GetApodo() + " activa el efecto especial de " + arma.getNombre() + "!\n");
+            mensaje += arma.usarEfectoEspecial(this) + "\n";
         }
 
         int danoBase = this.ataque - heroe.defensa;
@@ -54,66 +55,75 @@ public class Villano extends Personaje {
             danoBase = 0;
         }
 
-      
         if (Math.random() < 0.2) {
             danoBase *= 2;
             this.bendicion += 10;
-            System.out.println("🔥 ¡ATAQUE CRÍTICO! El daño aumenta a " + danoBase + " puntos! Y gana 10% mas de energía del vacío.");
+            mensaje += ("🔥 ¡ATAQUE CRÍTICO! El daño aumenta a " + danoBase + " puntos! Y gana 10% mas de energía del vacío.\n");
         }
 
         heroe.recibirDano(danoBase);
         if (heroe.GetSalud() < 0) {
             heroe.salud = 0;
         }
-        System.out.println("⚔️ " + this.GetApodo() + " ataca a " + heroe.GetApodo() + " causando " + danoBase + " de daño.");
+        mensaje += ("⚔️ " + this.GetApodo() + " ataca a " + heroe.GetApodo() + " causando " + danoBase + " de daño.\n");
 
-        
-        cargarBendicion();
+        mensaje += cargarBendicion() + "\n";
+        return mensaje;
     }
 
     @Override
-    public void invocarArma() {
+    public String invocarArma() {
+        String mensajeArma = "";
+        
         // 🌀 Habilidad suprema
         if (bendicion >= 100 && habilidad == null) {
-            System.out.println("🌑 " + GetApodo() + " ha alcanzado el 100% de corrupción... ¡Puede invocar al Leviatán!");
-            cargarHabilidad();
+            mensajeArma += ("🌑 " + GetApodo() + " ha alcanzado el 100% de corrupción... ¡Puede invocar al Leviatán!\n");
+            mensajeArma += cargarHabilidad() + "\n";
             habilidadesUsadas++;
-            return; 
+            return "";
         }
 
         if (bendicion >= 20 && arma == null) {
             arma = new HozOxidada(this);
-            System.out.println("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[0] = "Hoz Oxidada";
-        } 
-        else if (bendicion >= 40 && arma != null && arma.getNombre().equals("Hoz Oxidada")) {
+        } else if (bendicion >= 40 && arma != null && arma.getNombre().equals("Hoz Oxidada")) {
             arma = new HozVenenosa(this);
-            System.out.println("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[1] = "Hoz Venenosa";
-        } 
-        else if (bendicion >= 70 && arma != null && arma.getNombre().equals("Hoz Venenosa")) {
+        } else if (bendicion >= 70 && arma != null && arma.getNombre().equals("Hoz Venenosa")) {
             arma = new HozMortifera(this);
-            System.out.println("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Hoz Mortifera";
         }
+        
+        return mensajeArma;
     }
 
     @Override
-    public void cargarBendicion() {
+    public String cargarBendicion() {
+        
+        String mensajeBendicion = "";
+        
         int incremento = 10;
         bendicion += incremento;
         if (bendicion > 100) {
             bendicion = 100;
         }
 
-        System.out.println("🩸 " + GetApodo() + " incrementa su energía del vacío a " + bendicion + "%.");
+        mensajeBendicion += ("🩸 " + GetApodo() + " incrementa su energía del vacío a " + bendicion + "%.\n");
+        
+        return mensajeBendicion;
     }
 
     @Override
-    public void cargarHabilidad() {
+    public String cargarHabilidad() {
+        String mensajeHabilidad = "";
         if (bendicion >= 100) {
             habilidad = new LeviatanDelVacio();
-            System.out.println("🌌 ¡" + GetApodo() + " ha invocado al " + habilidad.nombre + "!");
+            mensajeHabilidad += ("🌌 ¡" + GetApodo() + " ha invocado al " + habilidad.nombre + "!\n");
         }
+        
+        return mensajeHabilidad;
     }
 }

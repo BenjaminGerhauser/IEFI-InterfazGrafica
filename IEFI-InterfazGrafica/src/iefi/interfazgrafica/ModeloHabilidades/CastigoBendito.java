@@ -3,34 +3,49 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package iefi.interfazgrafica.ModeloHabilidades;
+
 import iefi.interfazgrafica.ModeloPersonajes.Personaje;
+
 /**
  *
  * @author Juani
  */
-public class CastigoBendito extends Habilidad{
+public class CastigoBendito extends Habilidad {
+
     public CastigoBendito() {
         super("Castigo Bendito", 0); // se puede usar inmediatamente al 100%
     }
 
     @Override
-    public void ejecutar(Personaje lanzador, Personaje objetivo) {
+    public String ejecutar(Personaje lanzador, Personaje objetivo) {
+        StringBuilder mensaje = new StringBuilder();
+
         int dano = lanzador.GetSalud() / 2; // 50% de la vida actual del héroe
         objetivo.recibirDano(dano);
 
         if (objetivo.GetSalud() < 0) {
             objetivo.salud = 0;
         }
-        
-        
 
-        System.out.println(lanzador.GetApodo() + " lanza " + nombre + "!");
-        System.out.println("El rayo divino inflige " + dano + " puntos de daño directo a " + objetivo.GetApodo() + ".");
-        
-        // La bendicion vuelve a la mitad despues de lanzarlo
+        mensaje.append(lanzador.GetApodo())
+                .append(" lanza ")
+                .append(nombre)
+                .append("!\n")
+                .append("⚔️ El rayo divino inflige ")
+                .append(dano)
+                .append(" puntos de daño directo a ")
+                .append(objetivo.GetApodo())
+                .append(".\n");
+
+        // La bendición vuelve a la mitad después de lanzarlo
         lanzador.bendicion = 50;
-        System.out.println("El rayo divino reduce la bendicion del heroe al 50%");
         lanzador.habilidad = null;
-        
+
+        mensaje.append("✨ La bendición de ")
+                .append(lanzador.GetApodo())
+                .append(" se reduce al 50% tras liberar tanto poder divino.\n");
+
+        return mensaje.toString();
+
     }
 }

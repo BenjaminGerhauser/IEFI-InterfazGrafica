@@ -11,6 +11,8 @@ import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 public abstract class Arma {
     protected String nombre;
     protected int danioExtra;
+    protected String mensajeEfecto;
+    protected boolean efectoInicialAplicado = false;
 
     public Arma(String nombre, int danioExtra) {
         this.nombre = nombre;
@@ -22,5 +24,5 @@ public abstract class Arma {
     public int getDanioExtra() { 
         return danioExtra;
     } 
-    public abstract void usarEfectoEspecial(Personaje objetivo);
+    public abstract String usarEfectoEspecial(Personaje objetivo);
 }

@@ -9,7 +9,9 @@ import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 import iefi.interfazgrafica.controladores.ControladorBatalla;
 import iefi.interfazgrafica.controladores.ControladorPersonajes;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 /**
  *
@@ -49,10 +51,10 @@ public class frmBatalla extends javax.swing.JFrame {
         initComponents();
 
         this.cantidadBatallas = cantidadPartidas;
-        
+
         ctrlHeroe.personaje.habilidadPermitida = habilidadPermitida;
         ctrlVillano.personaje.habilidadPermitida = habilidadPermitida;
-        
+
         ctrlBatalla = new ControladorBatalla(ctrlHeroe.personaje, ctrlVillano.personaje, this);
 
         lblBatallaActual.setText("Batalla Actual: Partida " + batallaActual + "/" + cantidadPartidas);
@@ -94,16 +96,22 @@ public class frmBatalla extends javax.swing.JFrame {
         btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla));
     }
 
-    private void actualizarColorBarra(JProgressBar barra, int vidaActual, int vidaMaxima) {
-        double porcentaje = (double) vidaActual / vidaMaxima;
+    private void actualizarColorBarra(JProgressBar barra) {
+        barra.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
 
-        if (porcentaje <= 0.05) {
-            barra.setForeground(Color.red);
-        } else if (porcentaje <= 0.25) {
-            barra.setForeground(Color.orange);
+        int max = barra.getMaximum();
+        int value = barra.getValue(); // clamp
+
+        int porcentaje = (value * 100) / max; // <-- SIEMPRE con el máximo real de la barra
+        if (porcentaje <= 25 && porcentaje > 5) {
+            barra.setForeground(Color.ORANGE);
+        } else if (porcentaje <= 5) {
+            barra.setForeground(Color.RED);
         } else {
-            barra.setForeground(Color.green);
+            barra.setForeground(Color.GREEN);
         }
+
+        barra.repaint();
     }
 
     public void actualizarEstado(Batalla modelo) {
@@ -116,7 +124,8 @@ public class frmBatalla extends javax.swing.JFrame {
         lblDefensaHeroe.setText("Defensa: " + modelo.getHeroe().GetDefensa());
         lblAtaqueHeroe.setText("Ataque: " + modelo.getHeroe().GetAtaque());
         lblBendicionHeroe.setText("Bendición: " + modelo.getHeroe().GetBendicion());
-        actualizarColorBarra(pbVidaHeroe, vidaHeroe, vidaMaximaHeroe);
+
+        actualizarColorBarra(pbVidaHeroe);
 
         // 😈 VILLANO
         int vidaVillano = modelo.getVillano().GetSalud();
@@ -125,7 +134,7 @@ public class frmBatalla extends javax.swing.JFrame {
         lblDefensaVillano.setText("Defensa: " + modelo.getVillano().GetDefensa());
         lblAtaqueVillano.setText("Ataque: " + modelo.getVillano().GetAtaque());
         lblBendicionVillano.setText("Energia del Vacio: " + modelo.getVillano().GetBendicion());
-        actualizarColorBarra(pbVidaVillano, vidaVillano, vidaMaximaVillano);
+        actualizarColorBarra(pbVidaVillano);
     }
 
     /**
@@ -519,6 +528,9 @@ public class frmBatalla extends javax.swing.JFrame {
             pbVidaVillano.setMaximum(saludOriginalVillano);
             pbVidaHeroe.setValue(saludOriginalHeroe);
             pbVidaVillano.setValue(saludOriginalVillano);
+            // Refrescar color inicial (100%)
+            actualizarColorBarra(pbVidaHeroe);
+            actualizarColorBarra(pbVidaVillano);
 
             lblVidaHeroe.setText("Vida: " + saludOriginalHeroe);
             lblVidaVillano.setText("Vida: " + saludOriginalVillano);

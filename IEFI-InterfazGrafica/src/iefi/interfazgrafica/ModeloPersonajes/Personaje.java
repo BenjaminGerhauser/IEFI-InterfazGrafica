@@ -102,9 +102,9 @@ public abstract class Personaje {
         this.ataque += incremento;
     }
     
-    public void atacar(Personaje atacante, Personaje defensor){}
+    public String atacar(Personaje atacante, Personaje defensor){return "";}
     
-    public void invocarArma(){}
+    public String invocarArma(){return "";}
     
     public void cargarHabilidad(){}
     

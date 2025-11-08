@@ -27,6 +27,13 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
     public frmVistaConfiguracion() {
         initComponents();
 
+        // 🔹 Agrega un margen interno de 15 píxeles alrededor de todo el panel
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // 🔹 Evita deformaciones si cambian fuentes
+        this.setResizable(false);
+        this.setSize(650, 400); 
+
         numBnedicion.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         numDenfensa.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         numFuerza.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
@@ -72,8 +79,11 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
         setTitle("Configuracion");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Configuracion");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblApodo.setText("Apodo");
 
@@ -158,7 +168,7 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(numBnedicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(numDenfensa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 133, Short.MAX_VALUE))))
+                        .addGap(0, 131, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +200,7 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBendicion)
                     .addComponent(numBnedicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarPersonaje)
                     .addComponent(btnEliminarPersonaje))
@@ -310,7 +320,7 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         int cantidadBatallas = Integer.parseInt(cbCantidadBatallas.getSelectedItem().toString());
 
         javax.swing.SwingUtilities.invokeLater(() -> {

@@ -6,6 +6,7 @@ package iefi.interfazgrafica.ModeloBatalla;
 
 import java.util.Scanner;
 import iefi.interfazgrafica.ModeloPersonajes.Personaje;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -35,30 +36,17 @@ public class Batalla {
         return this.villano;
     }
     
-    public Object[] iniciarBatalla() {
-        System.out.println("⚔️  ¡Comienza la batalla entre " + heroe.GetApodo() + " y " + villano.GetApodo() + "!");
-        System.out.println("--------------------------------------------------");
-
-        while (heroe.estaVivo() && villano.estaVivo()) {
-            siguienteTurno();
-        }
-
-        String ganador = chequearVictoria();
-        Object[] info = new Object[]{heroe, villano, ganador, this.turnosEmpleados};
-        return info;
-    }
-
-    public void siguienteTurno() {
+    public void siguienteTurno(JTextArea txtEventos) {
         System.out.println("🔁 Turno " + turno + " ---------------------------");
 
         if (turno % 2 != 0) {
             // Turno del héroe
             System.out.println("🦸‍♂️ Turno de " + heroe.GetApodo());
-            heroe.atacar(heroe, villano);
+            txtEventos.setText(heroe.atacar(heroe, villano));
         } else {
             // Turno del villano
             System.out.println("😈 Turno de " + villano.GetApodo());
-            villano.atacar(villano, heroe);
+            txtEventos.setText(villano.atacar(villano, heroe));
         }
 
         mostrarEstado();

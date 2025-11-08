@@ -54,7 +54,10 @@ public class frmBatalla extends javax.swing.JFrame {
 
         ctrlHeroe.personaje.habilidadPermitida = habilidadPermitida;
         ctrlVillano.personaje.habilidadPermitida = habilidadPermitida;
-
+        
+        pbVidaHeroe.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
+        pbVidaVillano.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
+        
         ctrlBatalla = new ControladorBatalla(ctrlHeroe.personaje, ctrlVillano.personaje, this);
 
         lblBatallaActual.setText("Batalla Actual: Partida " + batallaActual + "/" + cantidadPartidas);
@@ -97,7 +100,6 @@ public class frmBatalla extends javax.swing.JFrame {
     }
 
     private void actualizarColorBarra(JProgressBar barra) {
-        barra.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
 
         int max = barra.getMaximum();
         int value = barra.getValue(); // clamp

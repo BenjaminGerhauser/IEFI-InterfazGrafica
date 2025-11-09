@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.plaf.basic.BasicProgressBarUI;
+import modelosBD.modeloBatalla;
 
 /**
  *
@@ -39,6 +40,12 @@ public class frmBatalla extends javax.swing.JFrame {
     private int ataqueOriginalVillano;
     private int defensaOriginalVillano;
     private int bendicionOriginalVillano;
+    
+    private int idVillano;
+    private int idHeroe;
+    private int turnos;
+    private int idBatalla;
+    private modelosBD.modeloEstadoPartida modeloEstadoPartida;
 
     /**
      * Creates new form frmBatalla
@@ -47,7 +54,7 @@ public class frmBatalla extends javax.swing.JFrame {
         initComponents();
     }
 
-    public frmBatalla(ControladorPersonajes ctrlHeroe, ControladorPersonajes ctrlVillano, int cantidadPartidas, boolean habilidadPermitida) {
+    public frmBatalla(ControladorPersonajes ctrlHeroe, ControladorPersonajes ctrlVillano, int cantidadPartidas, boolean habilidadPermitida, int idVillano, int idHeroe) {
         initComponents();
 
         this.cantidadBatallas = cantidadPartidas;
@@ -95,10 +102,30 @@ public class frmBatalla extends javax.swing.JFrame {
         defensaOriginalVillano = ctrlVillano.personaje.GetDefensa();
         bendicionOriginalVillano = ctrlVillano.personaje.GetBendicion();
 
+        this.idVillano = idVillano;
+        this.idHeroe = idHeroe;
         // Acción de botón
-        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla));
+        
+        guardarBatallaYEstadoInicial();
+        
+        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla, idVillano, idHeroe, this.turnos + 1, idBatalla, modeloEstadoPartida));
     }
 
+    private void guardarBatallaYEstadoInicial(){
+        modelosBD.modeloBatalla modeloBatalla = new modeloBatalla(idHeroe,idVillano, null, turnos + 1);
+        daos.DAObatalla DAObatalla = new daos.DAObatalla();
+        this.idBatalla = DAObatalla.guardar(modeloBatalla);
+        
+        
+        modelosBD.modeloEstadoPartida modeloEstadoPartida = new modelosBD.modeloEstadoPartida(idBatalla, idHeroe,idVillano,saludOriginalHeroe, saludOriginalVillano,ataqueOriginalHeroe,defensaOriginalHeroe,ataqueOriginalVillano,defensaOriginalVillano,bendicionOriginalHeroe, bendicionOriginalVillano,turnos);
+        modeloEstadoPartida.setFinalizada(false);
+        daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
+        int idEstadoPartida = DAOestadoPartida.guardar(modeloEstadoPartida);
+        modeloEstadoPartida.setId(idEstadoPartida);
+        this.modeloEstadoPartida = modeloEstadoPartida;
+    }
+    
+    
     private void actualizarColorBarra(JProgressBar barra) {
 
         int max = barra.getMaximum();
@@ -118,6 +145,7 @@ public class frmBatalla extends javax.swing.JFrame {
 
     public void actualizarEstado(Batalla modelo) {
         lblTurnoActual.setText("Turno actual: " + modelo.getTurno());
+        this.turnos = modelo.getTurno();
 
         // 🧍‍♂️ HÉROE
         int vidaHeroe = modelo.getHeroe().GetSalud();
@@ -454,6 +482,11 @@ public class frmBatalla extends javax.swing.JFrame {
         jMenu1.setText("Partida");
 
         btnGuardarPartida.setText("Guardar Partida");
+        btnGuardarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarPartidaActionPerformed(evt);
+            }
+        });
         jMenu1.add(btnGuardarPartida);
 
         btnSalir.setText("Salir");
@@ -549,7 +582,8 @@ public class frmBatalla extends javax.swing.JFrame {
             // 🔹 Habilitar / deshabilitar botones
             btnSiguienteTurno.setEnabled(true);
             btnSiguienteBatalla.setEnabled(false);
-
+            
+            guardarBatallaYEstadoInicial();
         } else {
             // 🔹 Si ya se jugaron todas las batallas
             txtEventos.append("\n🏁 Todas las batallas han finalizado.\n");
@@ -557,6 +591,23 @@ public class frmBatalla extends javax.swing.JFrame {
             btnSiguienteTurno.setEnabled(false);
         }
     }//GEN-LAST:event_btnSiguienteBatallaActionPerformed
+
+    private void btnGuardarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPartidaActionPerformed
+        modeloEstadoPartida.setVidaHeroe(ctrlBatalla.getHeroe().GetSalud());
+        modeloEstadoPartida.setAtaqueHeroe(ctrlBatalla.getHeroe().GetAtaque());
+        modeloEstadoPartida.setBendicionHeroe(ctrlBatalla.getHeroe().GetBendicion());
+        modeloEstadoPartida.setDefensaHeroe(ctrlBatalla.getHeroe().GetDefensa());
+        
+        
+        modeloEstadoPartida.setVidaVillano(ctrlBatalla.getVillano().GetSalud());
+        modeloEstadoPartida.setAtaqueVillano(ctrlBatalla.getVillano().GetAtaque());
+        modeloEstadoPartida.setBendicionVillano(ctrlBatalla.getVillano().GetBendicion());
+        modeloEstadoPartida.setDefensaVillano(ctrlBatalla.getVillano().GetDefensa());
+
+        modeloEstadoPartida.setTurnoActual(turnos);
+        daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
+        DAOestadoPartida.actualizar(modeloEstadoPartida);
+    }//GEN-LAST:event_btnGuardarPartidaActionPerformed
 
     /**
      * @param args the command line arguments

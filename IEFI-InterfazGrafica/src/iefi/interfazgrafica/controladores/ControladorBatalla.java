@@ -4,6 +4,8 @@ import iefi.interfazgrafica.ModeloBatalla.Batalla;
 import iefi.interfazgrafica.ModeloPersonajes.Personaje;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import modelosBD.modeloBatalla;
+import modelosBD.modeloEstadoPartida;
 import vistaBatalla.frmBatalla;
 
 public class ControladorBatalla {
@@ -33,9 +35,38 @@ public class ControladorBatalla {
         this.vista = vista;
     }
 
-    public void siguienteTurno(JTextArea txtEventos, JButton siguienteTurno, JButton siguienteBatalla) {
+    public void calcualrMaximoAtaque(int idAtacante, int ataqueActual, int idBatalla){
+        daos.DAObatalla DAObatalla = new daos.DAObatalla();
+        int mayorAtaqueAnterior = DAObatalla.obtenerMayorAtaqueActual(idBatalla);
+        if (ataqueActual > mayorAtaqueAnterior ) {
+            DAObatalla.actualizarMayorAtaque(idBatalla, ataqueActual, idAtacante);
+        }   
+    }
+    public void siguienteTurno(JTextArea txtEventos, JButton siguienteTurno, JButton siguienteBatalla, int idVillano, int idHeroe, int turnos, int idBatalla, modeloEstadoPartida estadoPartida) {
         batalla.siguienteTurno(txtEventos);
         vista.actualizarEstado(batalla);
+        
+        if (turnos % 2 == 0) {
+            calcualrMaximoAtaque(idHeroe, batalla.getHeroe().GetAtaque(), idBatalla);
+        }
+        else{
+            calcualrMaximoAtaque(idVillano, batalla.getVillano().GetAtaque(), idBatalla);
+        }
+        
+        estadoPartida.setVidaHeroe(batalla.getHeroe().GetSalud());
+        estadoPartida.setAtaqueHeroe(batalla.getHeroe().GetAtaque());
+        estadoPartida.setBendicionHeroe(batalla.getHeroe().GetBendicion());
+        estadoPartida.setDefensaHeroe(batalla.getHeroe().GetDefensa());
+        
+        
+        estadoPartida.setVidaVillano(batalla.getVillano().GetSalud());
+        estadoPartida.setAtaqueVillano(batalla.getVillano().GetAtaque());
+        estadoPartida.setBendicionVillano(batalla.getVillano().GetBendicion());
+        estadoPartida.setDefensaVillano(batalla.getVillano().GetDefensa());
+
+        estadoPartida.setTurnoActual(turnos);
+        daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
+        DAOestadoPartida.actualizar(estadoPartida);
 
         // Chequeamos si hay un ganador
         String ganador = batalla.chequearVictoria();
@@ -43,6 +74,24 @@ public class ControladorBatalla {
             txtEventos.setText(ganador);
             siguienteTurno.setEnabled(false);
             siguienteBatalla.setEnabled(true);
+            
+            //Guardar batalla en la base de datos
+            if (batalla.getHeroe().estaVivo()) {
+                modelosBD.modeloBatalla modeloBatalla = new modeloBatalla(idHeroe,idVillano, idHeroe, turnos);
+                modeloBatalla.setId(idBatalla);
+                daos.DAObatalla DAObatalla = new daos.DAObatalla();
+                DAObatalla.actualizarResultado(modeloBatalla);
+                estadoPartida.setFinalizada(true);
+                DAOestadoPartida.actualizar(estadoPartida);
+            }
+            else{
+                modelosBD.modeloBatalla modeloBatalla = new modeloBatalla(idHeroe,idVillano, idVillano, turnos);
+                modeloBatalla.setId(idBatalla);
+                daos.DAObatalla DAObatalla = new daos.DAObatalla();
+                DAObatalla.actualizarResultado(modeloBatalla);        
+                estadoPartida.setFinalizada(true);
+                DAOestadoPartida.actualizar(estadoPartida);
+            }
         }
     }
 }

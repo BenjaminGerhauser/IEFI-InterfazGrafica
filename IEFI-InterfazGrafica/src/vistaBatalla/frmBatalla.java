@@ -464,6 +464,11 @@ public class frmBatalla extends javax.swing.JFrame {
         jMenu2.setText("Ver");
 
         btnHistorial.setText("Historial de Partidas");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialActionPerformed(evt);
+            }
+        });
         jMenu2.add(btnHistorial);
 
         btnEstadisticas.setText("Estadísticas");
@@ -557,6 +562,12 @@ public class frmBatalla extends javax.swing.JFrame {
             btnSiguienteTurno.setEnabled(false);
         }
     }//GEN-LAST:event_btnSiguienteBatallaActionPerformed
+
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        vistaReportes.frmHistorialBatallas ventana = new vistaReportes.frmHistorialBatallas();
+        ventana.setLocationRelativeTo(this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
     /**
      * @param args the command line arguments

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vistaReportes;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -10,12 +11,33 @@ package vistaReportes;
  */
 public class frmHistorialBatallas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmHistorialBatallas
-     */
-    public frmHistorialBatallas() {
-        initComponents();
-    }
+    private DefaultListModel<String> modeloLista;
+        public frmHistorialBatallas() {
+            initComponents();
+            // 1) Setear modelo del JList
+            modeloLista = new DefaultListModel<>();
+            lstHistorialBatallas.setModel(modeloLista);
+
+            // 2) Cargar al abrir (sin depender del diseñador)
+            addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowOpened(java.awt.event.WindowEvent e) {
+                    cargarHistorial(); // <- acá llenás la lista
+                }
+            });
+        }
+
+        // 3) Tu lógica de carga (mock de ejemplo)
+        private void cargarHistorial() {
+            
+            modeloLista.clear();
+            modeloLista.addElement("Thor vs Loki → Gana Héroe | gano en (agregar variable) movimientos");
+            modeloLista.addElement("Zeus vs Kratos → Empate | se hicieron (agregar variable) movimientos");
+            modeloLista.addElement("Atenea vs Ares → Gana Héroe | gano en (agregar variable) movimientos");
+            modeloLista.addElement("Iron Man vs Thanos → Pierde Héroe | gano en (agregar variable) movimientos");
+            modeloLista.addElement("Hércules vs Hades → Gana Héroe | gano en (agregar variable) movimientos");
+        }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,23 +49,29 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstHistorialBatallas = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lstHistorialBatallas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jScrollPane1.setViewportView(lstHistorialBatallas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Historial de Batallas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -51,13 +79,13 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel1)
-                .addContainerGap(135, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(229, 229, 229)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -65,7 +93,7 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("jpHistorial");
@@ -73,6 +101,24 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+public class MiVista extends javax.swing.JFrame {
+
+    // 1) Campo de clase, NO dentro de un método
+    private DefaultListModel<String> modeloLista;
+
+    public MiVista() {
+        initComponents();
+
+        // 2) Crear el modelo y asignarlo al JList
+        modeloLista = new DefaultListModel<>();
+        lstHistorialBatallas.setModel(modeloLista); // usa el nombre real de tu JList
+    }
+
+    private void cargarHistorial() {
+        // Ejemplo:
+        modeloLista.addElement("Ventana abierta correctamente");
+    }}
     /**
      * @param args the command line arguments
      */
@@ -108,8 +154,11 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> lstHistorialBatallas;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,3 +1,14 @@
+Integrantes:
+Barreiro
+Noriega
+Sampo
+Periotti
+Valinotti
+Gerhauser
+
+Link video: https://www.youtube.com/watch?v=-RiKeXfoPyY
+
+Prompts:
 Sampo
 Prompt:
 2. Ventana de Configuración Inicial 

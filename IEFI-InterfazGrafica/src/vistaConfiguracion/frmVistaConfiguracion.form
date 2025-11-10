@@ -224,6 +224,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="numVida">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="numFuerza">
         </Component>

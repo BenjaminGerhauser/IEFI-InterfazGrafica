@@ -213,7 +213,7 @@ public class frmBatalla extends javax.swing.JFrame {
         btnEstadisticas = new javax.swing.JMenuItem();
         btnRanking = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Batalla");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -424,7 +424,7 @@ public class frmBatalla extends javax.swing.JFrame {
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 10, Short.MAX_VALUE)))
+                        .addGap(0, 18, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(282, 282, 282)
@@ -609,18 +609,21 @@ public class frmBatalla extends javax.swing.JFrame {
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
         vistaReportes.frmHistorialBatallas ventana = new vistaReportes.frmHistorialBatallas();
+        ventana.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ventana.setLocationRelativeTo(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstadisticasActionPerformed
         vistaReportes.frmEstadisticas ventana = new vistaReportes.frmEstadisticas();
+        ventana.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ventana.setLocationRelativeTo(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnEstadisticasActionPerformed
 
     private void btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankingActionPerformed
         vistaReportes.frmRanking ventana = new vistaReportes.frmRanking();
+        ventana.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ventana.setLocationRelativeTo(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnRankingActionPerformed

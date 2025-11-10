@@ -4,6 +4,7 @@
  */
 package vistaReportes;
 
+import iefi.interfazgrafica.controladores.ControladorReportes;
 import javax.swing.DefaultListModel;
 
 /**
@@ -28,14 +29,10 @@ public class frmRanking extends javax.swing.JFrame {
         });
     }
      private void cargarHistorial() {
-
+        ControladorReportes ctlr = new ControladorReportes();
         modeloLista.clear();
-        modeloLista.addElement("=== ESTADÍSTICAS GENERALES ===");
-        modeloLista.addElement("• Batalla más larga: 15 turnos (Ganador: Thor)");
-        modeloLista.addElement("• Mayor daño: 520 puntos (Ares)");
-        modeloLista.addElement("• Armas invocadas: 27");
-        modeloLista.addElement("• Ataques supremos usados: 42");
-        modeloLista.addElement("• % de victorias → Héroes: 65% | Villanos: 35%");
+        modeloLista.addElement("=== RANKING DE PERSONAJES ===");
+        modeloLista.addElement(ctlr.obtenerRankingFormateado());
     }
 
     /**

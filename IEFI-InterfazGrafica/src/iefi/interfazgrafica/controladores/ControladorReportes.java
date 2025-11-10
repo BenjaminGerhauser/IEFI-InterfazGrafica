@@ -5,6 +5,7 @@
 package iefi.interfazgrafica.controladores;
 
 import java.util.List;
+import modelosBD.modeloBatalla;
 import modelosBD.modeloPersonaje;
 
 /**
@@ -51,5 +52,9 @@ public class ControladorReportes {
 
         return resultado.toString();
     }
-
+  public List<modeloBatalla> obtenerHistorial() {
+        daos.DAObatalla daos= new daos.DAObatalla();
+        List<modeloBatalla> lista = daos.listarHistorial();
+        return lista;
+    }
 }

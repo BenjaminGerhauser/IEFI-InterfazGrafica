@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vistaReportes;
+import daos.DAObatalla;
+import iefi.interfazgrafica.controladores.ControladorReportes;
+import java.util.List;
 import javax.swing.DefaultListModel;
+import modelosBD.modeloBatalla;
 
 /**
  *
@@ -11,32 +15,37 @@ import javax.swing.DefaultListModel;
  */
 public class frmHistorialBatallas extends javax.swing.JFrame {
 
-    private DefaultListModel<String> modeloLista;
+    private DefaultListModel<modeloBatalla> modeloLista;
+    
         public frmHistorialBatallas() {
             initComponents();
-            // 1) Setear modelo del JList
-            modeloLista = new DefaultListModel<>();
-            lstHistorialBatallas.setModel(modeloLista);
 
-            // 2) Cargar al abrir (sin depender del diseñador)
-            addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowOpened(java.awt.event.WindowEvent e) {
-                    cargarHistorial(); // <- acá llenás la lista
-                }
-            });
-        }
+        
+        modeloLista = new DefaultListModel<>();
+        lstHistorialBatallas.setModel(modeloLista);
 
-        // 3) Tu lógica de carga (mock de ejemplo)
-        private void cargarHistorial() {
-            
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent e) {
+                cargarUltimasCinco();
+            }
+        });
+    }
+
+    private void cargarUltimasCinco() {
+        try {
+            ControladorReportes conRepo = new ControladorReportes();
             modeloLista.clear();
-            modeloLista.addElement("Thor vs Loki → Gana Héroe | gano en (agregar variable) movimientos");
-            modeloLista.addElement("Zeus vs Kratos → Empate | se hicieron (agregar variable) movimientos");
-            modeloLista.addElement("Atenea vs Ares → Gana Héroe | gano en (agregar variable) movimientos");
-            modeloLista.addElement("Iron Man vs Thanos → Pierde Héroe | gano en (agregar variable) movimientos");
-            modeloLista.addElement("Hércules vs Hades → Gana Héroe | gano en (agregar variable) movimientos");
+            List<modeloBatalla> ultimas = conRepo.obtenerHistorial();
+            // Por si tu BD devuelve menos de 5, igual funciona:
+            for (modeloBatalla b : ultimas) {
+                modeloLista.addElement(b);
+            }
+        } catch (Exception ex) {
+            System.err.println("Error cargando historial: " + ex.getMessage());
         }
+    }
+
     
 
     /**
@@ -109,6 +118,6 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstHistorialBatallas;
+    private javax.swing.JList<modeloBatalla> lstHistorialBatallas;
     // End of variables declaration//GEN-END:variables
 }

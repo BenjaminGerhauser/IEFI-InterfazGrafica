@@ -4,6 +4,7 @@
  */
 package iefi.interfazgrafica.controladores;
 
+import daos.DAOpersonaje;
 import java.util.List;
 import modelosBD.modeloBatalla;
 import modelosBD.modeloPersonaje;
@@ -47,14 +48,45 @@ public class ControladorReportes {
                     p.getTipo(),
                     p.getVidaFinal(),
                     p.getVictorias(),
-                    p.getSupremosUsados()));
+                    p.getSupremosUsados(),"\n"));
         }
 
         return resultado.toString();
     }
-  public List<modeloBatalla> obtenerHistorial() {
-        daos.DAObatalla daos= new daos.DAObatalla();
-        List<modeloBatalla> lista = daos.listarHistorial();
-        return lista;
+    public String obtenerHistorial() {
+    daos.DAObatalla dao = new daos.DAObatalla();
+    List<modeloBatalla> lista = dao.listarHistorial();
+    daos.DAOpersonaje daoPersonajes =  new DAOpersonaje();
+    if (lista == null || lista.isEmpty()) {
+        return "No hay batallas registradas.";
     }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("=== ÚLTIMAS 5 BATALLAS ===\n");
+
+    for (modeloBatalla b : lista) {
+        // Si los nombres no están cargados, mostrar por ID
+        modelosBD.modeloPersonaje modeloPersonaje = new modelosBD.modeloPersonaje();
+        modeloPersonaje apodoVillano = daoPersonajes.buscarPorId(b.getVillanoId());
+        modeloPersonaje apodoHeroe = daoPersonajes.buscarPorId(b.getHeroeId());
+        
+
+        
+        sb.append("Batalla #").append(b.getId())
+          .append(" - Héroe: ").append(apodoHeroe.getApodo())
+          .append(" | Villano: ").append(apodoVillano.getApodo());
+
+        // Ganador puede ser null
+        if (b.getGanadorId() != 0) {
+            modeloPersonaje apodoGanador = daoPersonajes.buscarPorId(b.getGanadorId());
+            sb.append(" | Ganador: ").append(apodoGanador.getApodo());
+        } else {
+            sb.append(" | Ganador: -");
+        }
+
+        sb.append(" | Turnos: ").append(b.getTurnos()).append("\n");
+    }
+
+    return sb.toString();
+}
 }

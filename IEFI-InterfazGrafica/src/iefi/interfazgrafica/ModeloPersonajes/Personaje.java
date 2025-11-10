@@ -21,6 +21,9 @@ public abstract class Personaje {
     public Arma arma;
     public Habilidad habilidad;
     public boolean habilidadPermitida = true;
+    public int cantArmasInvocadas = 0;    
+    public int cantHabilidadesInvocadas = 0;
+
     
     public Personaje(){}
     

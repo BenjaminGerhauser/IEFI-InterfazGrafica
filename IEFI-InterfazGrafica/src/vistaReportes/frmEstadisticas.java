@@ -13,13 +13,11 @@ import javax.swing.DefaultListModel;
  */
 public class frmEstadisticas extends javax.swing.JFrame {
 
-    private DefaultListModel<String> modeloLista;
 
     public frmEstadisticas() {
         initComponents();
         // 1) Setear modelo del JList
-        modeloLista = new DefaultListModel<>();
-        lstEstadisticas.setModel(modeloLista);
+      
 
         // 2) Cargar al abrir (sin depender del diseñador)
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -34,13 +32,8 @@ public class frmEstadisticas extends javax.swing.JFrame {
     private void cargarHistorial() {
         ControladorReportes ctlr = new ControladorReportes();
         
-        modeloLista.clear();
-        modeloLista.addElement("=== ESTADÍSTICAS GENERALES ===");
-        modeloLista.addElement(ctlr.MayorAtaque);
-        modeloLista.addElement(ctlr.BatallaMasLarga);
-        modeloLista.addElement(ctlr.ArmasInvocadasPorPersonaje);
-        modeloLista.addElement(ctlr.SupremosEjecutados);
-        modeloLista.addElement(ctlr.PorcentajeVictoriasPorTipo);
+        txtAreaStats.setText("=== ESTADÍSTICAS GENERALES === \n" + ctlr.MayorAtaque + "\n" + ctlr.BatallaMasLarga + "\n" + ctlr.ArmasInvocadasPorPersonaje + "\n" + ctlr.SupremosEjecutados + "\n" + ctlr.PorcentajeVictoriasPorTipo);
+  
     }
 
     /**
@@ -53,17 +46,18 @@ public class frmEstadisticas extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstEstadisticas = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaStats = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Estadísticas");
 
-        lstEstadisticas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jScrollPane1.setViewportView(lstEstadisticas);
-        lstEstadisticas.getAccessibleContext().setAccessibleName("lstEstadisticas");
+        txtAreaStats.setEditable(false);
+        txtAreaStats.setColumns(20);
+        txtAreaStats.setRows(5);
+        jScrollPane2.setViewportView(txtAreaStats);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,12 +65,12 @@ public class frmEstadisticas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(224, 224, 224)
+                .addGap(250, 250, 250)
                 .addComponent(jLabel1)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,8 +78,8 @@ public class frmEstadisticas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -128,7 +122,7 @@ public class frmEstadisticas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstEstadisticas;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea txtAreaStats;
     // End of variables declaration//GEN-END:variables
 }

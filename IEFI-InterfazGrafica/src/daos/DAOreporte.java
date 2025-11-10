@@ -57,7 +57,7 @@ public class DAOreporte {
     // 3️⃣ 🔹 Total de armas invocadas (por personaje)
     public String obtenerArmasInvocadasPorPersonaje() {
         String sql = "SELECT nombre, apodo, armas_invocadas "
-                + "FROM personajes ORDER BY armas_invocadas DESC";
+                + "FROM personajes ORDER BY armas_invocadas DESC LIMIT 5";
 
         StringBuilder resultado = new StringBuilder();
 
@@ -83,7 +83,7 @@ public class DAOreporte {
     // 4️⃣ 🔹 Ataques supremos ejecutados (por personaje)
     public String obtenerSupremosEjecutados() {
         String sql = "SELECT nombre, apodo, supremos_usados "
-                + "FROM personajes ORDER BY supremos_usados DESC";
+                + "FROM personajes ORDER BY supremos_usados DESC LIMIT 5";
 
         StringBuilder resultado = new StringBuilder();
 

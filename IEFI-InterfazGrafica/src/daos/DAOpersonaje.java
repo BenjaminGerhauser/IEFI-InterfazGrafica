@@ -70,7 +70,7 @@ public class DAOpersonaje {
     }
 
     public void actualizarEstadisticas(modeloPersonaje personaje){
-        String sql = "UPDATE personajes SET vida_final=?, ataque=?, defensa=?, victorias=?, supremos_usados=?, armas_invocadas=? WHERE id_personaje=?";
+        String sql = "UPDATE personajes SET vida_final=?, ataque=?, defensa=?, victorias=?,supremos_usados=?, armas_invocadas=? WHERE id_personaje=?";
         try (Connection conn = conexionBD.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

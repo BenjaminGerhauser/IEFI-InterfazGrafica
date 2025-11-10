@@ -13,12 +13,9 @@ import javax.swing.DefaultListModel;
  */
 public class frmRanking extends javax.swing.JFrame {
 
-    private DefaultListModel<String> modeloLista;
 
     public frmRanking() {
         initComponents();
-         modeloLista = new DefaultListModel<>();
-        lstRanking.setModel(modeloLista);
 
         // 2) Cargar al abrir (sin depender del diseñador)
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -30,9 +27,7 @@ public class frmRanking extends javax.swing.JFrame {
     }
      private void cargarHistorial() {
         ControladorReportes ctlr = new ControladorReportes();
-        modeloLista.clear();
-        modeloLista.addElement("=== RANKING DE PERSONAJES ===");
-        modeloLista.addElement(ctlr.obtenerRankingFormateado());
+        txtAreaRanking.setText("=== RANKING DE PERSONAJES ===\n" + ctlr.obtenerRankingFormateado());
     }
 
     /**
@@ -44,31 +39,32 @@ public class frmRanking extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstRanking = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaRanking = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lstRanking.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jScrollPane1.setViewportView(lstRanking);
-        lstRanking.getAccessibleContext().setAccessibleName("lstRanking");
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Ranking de Personajes");
+
+        txtAreaRanking.setEditable(false);
+        txtAreaRanking.setColumns(20);
+        txtAreaRanking.setRows(5);
+        jScrollPane2.setViewportView(txtAreaRanking);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(154, 154, 154)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane2)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(343, 343, 343)
+                .addComponent(jLabel1)
+                .addContainerGap(359, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,8 +72,8 @@ public class frmRanking extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -120,7 +116,7 @@ public class frmRanking extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstRanking;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea txtAreaRanking;
     // End of variables declaration//GEN-END:variables
 }

@@ -87,14 +87,17 @@ public class Villano extends Personaje {
             arma = new HozOxidada(this);
             mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[0] = "Hoz Oxidada";
+            this.cantArmasInvocadas ++;
         } else if (bendicion >= 40 && arma != null && arma.getNombre().equals("Hoz Oxidada")) {
             arma = new HozVenenosa(this);
             mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[1] = "Hoz Venenosa";
+            this.cantArmasInvocadas ++;
         } else if (bendicion >= 70 && arma != null && arma.getNombre().equals("Hoz Venenosa")) {
             arma = new HozMortifera(this);
             mensajeArma += ("🪓 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Hoz Mortifera";
+            this.cantArmasInvocadas ++;
         }
         
         return mensajeArma;
@@ -122,6 +125,7 @@ public class Villano extends Personaje {
         if (bendicion >= 100) {
             habilidad = new LeviatanDelVacio();
             mensajeHabilidad += ("🌌 ¡" + GetApodo() + " ha invocado al " + habilidad.nombre + "!\n");
+            this.cantHabilidadesInvocadas ++;
         }
         
         return mensajeHabilidad;

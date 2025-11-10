@@ -15,14 +15,11 @@ import modelosBD.modeloBatalla;
  */
 public class frmHistorialBatallas extends javax.swing.JFrame {
 
-    private DefaultListModel<modeloBatalla> modeloLista;
     
         public frmHistorialBatallas() {
             initComponents();
 
         
-        modeloLista = new DefaultListModel<>();
-        lstHistorialBatallas.setModel(modeloLista);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -35,12 +32,8 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
     private void cargarUltimasCinco() {
         try {
             ControladorReportes conRepo = new ControladorReportes();
-            modeloLista.clear();
-            List<modeloBatalla> ultimas = conRepo.obtenerHistorial();
-            // Por si tu BD devuelve menos de 5, igual funciona:
-            for (modeloBatalla b : ultimas) {
-                modeloLista.addElement(b);
-            }
+            String historial = conRepo.obtenerHistorial();
+            txtAreaHistorial.setText(historial);
         } catch (Exception ex) {
             System.err.println("Error cargando historial: " + ex.getMessage());
         }
@@ -58,30 +51,30 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstHistorialBatallas = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaHistorial = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        lstHistorialBatallas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jScrollPane1.setViewportView(lstHistorialBatallas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGap(0, 308, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Historial de Batallas");
+
+        txtAreaHistorial.setEditable(false);
+        txtAreaHistorial.setColumns(20);
+        txtAreaHistorial.setRows(5);
+        jScrollPane2.setViewportView(txtAreaHistorial);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,6 +82,8 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -101,7 +96,9 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -117,7 +114,7 @@ public class frmHistorialBatallas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<modeloBatalla> lstHistorialBatallas;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea txtAreaHistorial;
     // End of variables declaration//GEN-END:variables
 }

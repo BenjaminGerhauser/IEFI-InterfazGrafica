@@ -108,7 +108,7 @@ public class frmBatalla extends javax.swing.JFrame {
         
         guardarBatallaYEstadoInicial();
         
-        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla, idVillano, idHeroe, this.turnos + 1, idBatalla, modeloEstadoPartida));
+        btnSiguienteTurno.addActionListener(e -> ctrlBatalla.siguienteTurno(txtEventos, btnSiguienteTurno, btnSiguienteBatalla, idVillano, idHeroe, this.turnos + 1, idBatalla, modeloEstadoPartida, ctrlHeroe,ctrlVillano));
     }
 
     private void guardarBatallaYEstadoInicial(){
@@ -117,7 +117,7 @@ public class frmBatalla extends javax.swing.JFrame {
         this.idBatalla = DAObatalla.guardar(modeloBatalla);
         
         
-        modelosBD.modeloEstadoPartida modeloEstadoPartida = new modelosBD.modeloEstadoPartida(idBatalla, idHeroe,idVillano,saludOriginalHeroe, saludOriginalVillano,ataqueOriginalHeroe,defensaOriginalHeroe,ataqueOriginalVillano,defensaOriginalVillano,bendicionOriginalHeroe, bendicionOriginalVillano,turnos);
+        modelosBD.modeloEstadoPartida modeloEstadoPartida = new modelosBD.modeloEstadoPartida(idBatalla, idHeroe,idVillano,saludOriginalHeroe, saludOriginalVillano,ataqueOriginalHeroe,defensaOriginalHeroe,ataqueOriginalVillano,defensaOriginalVillano,bendicionOriginalHeroe, bendicionOriginalVillano,turnos+1);
         modeloEstadoPartida.setFinalizada(false);
         daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
         int idEstadoPartida = DAOestadoPartida.guardar(modeloEstadoPartida);
@@ -490,6 +490,11 @@ public class frmBatalla extends javax.swing.JFrame {
         jMenu1.add(btnGuardarPartida);
 
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
         jMenu1.add(btnSalir);
 
         jMenuBar1.add(jMenu1);
@@ -642,7 +647,26 @@ public class frmBatalla extends javax.swing.JFrame {
         modeloEstadoPartida.setTurnoActual(turnos);
         daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
         DAOestadoPartida.actualizar(modeloEstadoPartida);
+        JOptionPane.showMessageDialog(
+            null, 
+            "Partida guardada", 
+            "Info", 
+            JOptionPane.INFORMATION_MESSAGE 
+        );
+        
     }//GEN-LAST:event_btnGuardarPartidaActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que querés salir del programa?",
+                "Confirmar salida",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments

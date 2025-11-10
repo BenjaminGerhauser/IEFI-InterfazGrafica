@@ -42,7 +42,7 @@ public class ControladorBatalla {
             DAObatalla.actualizarMayorAtaque(idBatalla, ataqueActual, idAtacante);
         }   
     }
-    public void siguienteTurno(JTextArea txtEventos, JButton siguienteTurno, JButton siguienteBatalla, int idVillano, int idHeroe, int turnos, int idBatalla, modeloEstadoPartida estadoPartida) {
+    public void siguienteTurno(JTextArea txtEventos, JButton siguienteTurno, JButton siguienteBatalla, int idVillano, int idHeroe, int turnos, int idBatalla, modeloEstadoPartida estadoPartida, ControladorPersonajes ctrlHeroe,ControladorPersonajes ctrlVillano) {
         batalla.siguienteTurno(txtEventos);
         vista.actualizarEstado(batalla);
         
@@ -68,6 +68,16 @@ public class ControladorBatalla {
         daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
         DAOestadoPartida.actualizar(estadoPartida);
 
+        daos.DAOpersonaje daoPersonaje = new daos.DAOpersonaje();
+        modelosBD.modeloPersonaje modeloVillano = new modelosBD.modeloPersonaje();
+        modelosBD.modeloPersonaje modeloHeroe = new modelosBD.modeloPersonaje();
+
+        
+
+        
+
+        daoPersonaje.actualizarEstadisticas(modeloHeroe);
+        daoPersonaje.actualizarEstadisticas(modeloVillano);
         // Chequeamos si hay un ganador
         String ganador = batalla.chequearVictoria();
         if (!batalla.getHeroe().estaVivo() || !batalla.getVillano().estaVivo()) {
@@ -75,6 +85,19 @@ public class ControladorBatalla {
             siguienteTurno.setEnabled(false);
             siguienteBatalla.setEnabled(true);
             
+            modeloHeroe.setId(idHeroe);
+            modeloHeroe.setVidaFinal(ctrlHeroe.personaje.GetSalud());
+            modeloHeroe.setAtaque(ctrlHeroe.personaje.GetAtaque());
+            modeloHeroe.setSupremosUsados(ctrlHeroe.personaje.cantHabilidadesInvocadas);
+            modeloHeroe.setArmasInvocadas(ctrlHeroe.personaje.cantArmasInvocadas);
+            modeloHeroe.setDefensa(ctrlHeroe.personaje.GetDefensa());
+        
+            modeloVillano.setId(idVillano);
+            modeloVillano.setVidaFinal(ctrlVillano.personaje.GetSalud());
+            modeloVillano.setAtaque(ctrlVillano.personaje.GetAtaque());
+            modeloVillano.setSupremosUsados(ctrlVillano.personaje.cantHabilidadesInvocadas);
+            modeloVillano.setArmasInvocadas(ctrlVillano.personaje.cantArmasInvocadas);
+            modeloVillano.setDefensa(ctrlVillano.personaje.GetDefensa());
             //Guardar batalla en la base de datos
             if (batalla.getHeroe().estaVivo()) {
                 modelosBD.modeloBatalla modeloBatalla = new modeloBatalla(idHeroe,idVillano, idHeroe, turnos);
@@ -83,6 +106,10 @@ public class ControladorBatalla {
                 DAObatalla.actualizarResultado(modeloBatalla);
                 estadoPartida.setFinalizada(true);
                 DAOestadoPartida.actualizar(estadoPartida);
+                
+
+                modeloHeroe.setVictorias(modeloHeroe.getVictorias() + 1);
+                daoPersonaje.actualizarEstadisticas(modeloHeroe);
             }
             else{
                 modelosBD.modeloBatalla modeloBatalla = new modeloBatalla(idHeroe,idVillano, idVillano, turnos);
@@ -91,7 +118,13 @@ public class ControladorBatalla {
                 DAObatalla.actualizarResultado(modeloBatalla);        
                 estadoPartida.setFinalizada(true);
                 DAOestadoPartida.actualizar(estadoPartida);
+                
+                
+                modeloVillano.setVictorias(modeloVillano.getVictorias() + 1);
+                daoPersonaje.actualizarEstadisticas(modeloVillano);
             }
         }
+        
+
     }
 }

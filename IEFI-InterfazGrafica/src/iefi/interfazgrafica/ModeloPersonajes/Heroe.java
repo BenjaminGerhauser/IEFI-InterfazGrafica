@@ -86,16 +86,19 @@ public class Heroe extends Personaje {
             arma = new EspadaSimple(this);
             mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[0] = "Espada Simple";
+            this.cantArmasInvocadas ++;
         } // 🗡️ Evoluciona a Espada Sagrada (solo si la actual es Simple)
         else if (bendicion >= 40 && arma != null && arma.getNombre().equals("Espada Simple")) {
             arma = new EspadaSagrada(this);
             mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Espada Sagrada";
+            this.cantArmasInvocadas ++;
         } // 🗡️ Evoluciona a Espada Celestial (solo si la actual es Sagrada)
         else if (bendicion >= 70 && arma != null && arma.getNombre().equals("Espada Sagrada")) {
             arma = new EspadaCelestial(this);
             mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Espada Celestial";
+            this.cantArmasInvocadas ++;
         }
         
         return mensajeArma;
@@ -125,6 +128,7 @@ public class Heroe extends Personaje {
         if (bendicion >= 100) {
             habilidad = new CastigoBendito();
             mensajeHabilidad += ("🌟 ¡" + GetApodo() + " desbloqueó su habilidad suprema: " + habilidad.nombre + "!\n");
+            this.cantHabilidadesInvocadas ++;
         }
         
         return mensajeHabilidad;

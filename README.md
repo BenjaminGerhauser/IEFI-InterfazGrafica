@@ -100,6 +100,6 @@ Respuesta:<img width="674" height="671" alt="image" src="https://github.com/user
 
 Gerhauser: https://chatgpt.com/share/69119605-b3d4-8008-a070-dc25669cd97a
 
-
+Barreiro: https://chatgpt.com/share/691196c5-d374-8008-beec-421c66193c5c
 
 

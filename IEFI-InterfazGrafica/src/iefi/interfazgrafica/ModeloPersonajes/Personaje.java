@@ -20,6 +20,10 @@ public abstract class Personaje {
     public int bendicion = 0;
     public Arma arma;
     public Habilidad habilidad;
+    public boolean habilidadPermitida = true;
+    public int cantArmasInvocadas = 0;    
+    public int cantHabilidadesInvocadas = 0;
+
     
     public Personaje(){}
     
@@ -29,38 +33,69 @@ public abstract class Personaje {
         this.ataque = ataque;
     }
     
-    public void ingresarApodo(){
-        this.apodo = validarApodo();
+    public void crearPersonaje(String apodo, int salud, int defensa, int ataque, int bendicion) {
+    // Validar apodo usando el método ya existente
+    this.apodo = validarApodo(apodo);
+
+    // Asignar el resto de los atributos
+    this.salud = salud;
+    this.defensa = defensa;
+    this.ataque = ataque;
+    this.bendicion = bendicion;
     }
     
-    public String validarApodo() {
-        Scanner sc = new Scanner(System.in);
-        String apodo;
-        while (true) {
-            System.out.print("Ingrese un apodo (3 a 10 caracteres, solo letras y espacios): ");
-            apodo = sc.nextLine().trim();
-
-            // Solo letras y espacios
-            if (!apodo.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
-                System.out.println("❌ El apodo solo puede contener letras y espacios.");
-                continue;
-            }
-
-            // Longitud 3–10
-            if (apodo.length() < 3 || apodo.length() > 10) {
-                System.out.println("❌ El apodo debe tener entre 3 y 10 caracteres.");
-                continue;
-            }
-
-            // Si pasó todas las validaciones, salimos del bucle
-            break;
-        }
-
-        return apodo;
+    public void ingresarApodo(String apodo){
+        this.apodo = validarApodo(apodo);    
     }
+    
+    public String validarApodo(String apodo) {
+    if (apodo == null || apodo.trim().isEmpty()) {
+        throw new IllegalArgumentException("El apodo no puede estar vacío.");
+    }
+
+    apodo = apodo.trim();
+
+    if (!apodo.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+        throw new IllegalArgumentException("El apodo solo puede contener letras y espacios.");
+    }
+
+    if (apodo.length() < 3 || apodo.length() > 10) {
+        throw new IllegalArgumentException("El apodo debe tener entre 3 y 10 caracteres.");
+    }
+
+    return apodo;
+}
     
     public String GetApodo(){
         return this.apodo;
+    }
+    
+    public int GetDefensa(){
+        return this.defensa;
+    }
+    
+    public int GetAtaque(){
+        return this.ataque;
+    }
+    
+    public int GetBendicion(){
+        return this.bendicion;
+    }
+    
+    public void SetDefensa(int defensa){
+        this.defensa = defensa;
+    }
+    
+    public void SetAtaque(int ataque){
+        this.ataque = ataque;
+    }
+    
+    public void SetBendicion(int bendicion){
+        this.bendicion = bendicion;
+    }
+    
+    public void SetSalud(int salud){
+        this.salud = salud;
     }
     
     public void curarse(int curacion){
@@ -80,20 +115,20 @@ public abstract class Personaje {
     }
     
     public void incrementarDefensa(int incremento){
-        this.defensa += defensa;
+        this.defensa += incremento;
     }
     
     public void incrementarAtaque(int incremento){
         this.ataque += incremento;
     }
     
-    public void atacar(Personaje atacante, Personaje defensor){}
+    public String atacar(Personaje atacante, Personaje defensor){return "";}
     
-    public void invocarArma(){}
+    public String invocarArma(){return "";}
     
-    public void cargarHabilidad(){}
+    public String cargarHabilidad(){return "";}
     
-    public void cargarBendicion(){}
+    public String cargarBendicion(){return "";}
     
 }
 

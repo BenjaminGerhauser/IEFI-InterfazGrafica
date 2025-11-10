@@ -30,23 +30,23 @@ public class Heroe extends Personaje {
     }
     
     @Override
-    public void atacar(Personaje heroe, Personaje villano) {
-
-        invocarArma();
+    public String atacar(Personaje heroe, Personaje villano) {
+        String mensaje = "";
+        mensaje += invocarArma() + "\n";
         
-        if (this.habilidad != null) {
+        if (this.habilidad != null && this.habilidadPermitida) {
             if(this.habilidad.estaDisponible()){
-                this.habilidad.ejecutar(heroe, villano);
-                return;
+                mensaje += this.habilidad.ejecutar(heroe, villano) + "\n";
+                return mensaje;
             }else{
-                System.out.println("❌ La habilidad " + this.habilidad.nombre + " aún no está lista.");
+                mensaje += ("❌ La habilidad " + this.habilidad.nombre + " aún no está lista.\n");
                 this.habilidad.pasarTurno();
             }
         }
 
         if (arma != null) {
-            System.out.println("✨ " + GetApodo() + " utiliza el efecto especial de " + arma.getNombre() + "!");
-            arma.usarEfectoEspecial(this);
+            mensaje +=("✨ " + GetApodo() + " utiliza el efecto especial de " + arma.getNombre() + "!\n");
+            mensaje += arma.usarEfectoEspecial(this) + "\n";
         }
 
         int danoBase = this.ataque - villano.defensa;
@@ -57,61 +57,80 @@ public class Heroe extends Personaje {
         if (Math.random() < 0.2) {
             danoBase *= 2; 
             this.bendicion += 10;
-            System.out.println("🔥 ¡ATAQUE CRÍTICO! El daño aumenta a " + danoBase + " puntos! Y gana 10% mas de bendicion celestial.");
+            mensaje += ("🔥 ¡ATAQUE CRÍTICO! El daño aumenta a " + danoBase + " puntos! Y gana 10% mas de bendicion celestial.\n");
         }
 
         villano.recibirDano(danoBase);
         if (villano.GetSalud() < 0) {
             villano.salud = 0;
         }
-        System.out.println("🗡️ " + this.GetApodo() + " ataca a " + villano.GetApodo() + " causando " + danoBase + " de daño.");
-        cargarBendicion();
+        mensaje +=("🗡️ " + this.GetApodo() + " ataca a " + villano.GetApodo() + " causando " + danoBase + " de daño.\n");
+        mensaje+= cargarBendicion() + "\n";
+        
+        return mensaje;
 
     }
 
     @Override
-    public void invocarArma() {
+    public String invocarArma() {
+        String mensajeArma = "";
         if (bendicion >= 100 && habilidad == null) {
-            System.out.println("⚡ " + GetApodo() + " ha alcanzado el 100% de bendición. ¡Puede usar su habilidad suprema!");
-            cargarHabilidad();
+            mensajeArma += ("⚡ " + GetApodo() + " ha alcanzado el 100% de bendición. ¡Puede usar su habilidad suprema!\n");
+            mensajeArma += cargarHabilidad() + "\n";
             habilidadesUsadas++;
-            return; // 👈 no seguimos con armas si ya tiene habilidad
+            return ""; // 👈 no seguimos con armas si ya tiene habilidad
         }
 
         // 🗡️ Invocar Espada Simple (solo si no hay arma)
         if (bendicion >= 20 && arma == null) {
             arma = new EspadaSimple(this);
-            System.out.println("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[0] = "Espada Simple";
+            this.cantArmasInvocadas ++;
         } // 🗡️ Evoluciona a Espada Sagrada (solo si la actual es Simple)
         else if (bendicion >= 40 && arma != null && arma.getNombre().equals("Espada Simple")) {
             arma = new EspadaSagrada(this);
-            System.out.println("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Espada Sagrada";
+            this.cantArmasInvocadas ++;
         } // 🗡️ Evoluciona a Espada Celestial (solo si la actual es Sagrada)
         else if (bendicion >= 70 && arma != null && arma.getNombre().equals("Espada Sagrada")) {
             arma = new EspadaCelestial(this);
-            System.out.println("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!");
+            mensajeArma += ("🔮 " + GetApodo() + " invoca " + arma.getNombre() + "!\n");
             armasInvocadas[2] = "Espada Celestial";
+            this.cantArmasInvocadas ++;
         }
+        
+        return mensajeArma;
     }
 
     @Override
-    public void cargarBendicion() {
+    public String cargarBendicion() {
+        
+        String mensajeBendicion = "";
+        
         int incremento = 10;
         bendicion += incremento;
         if (bendicion > 100) {
             bendicion = 100;
         }
 
-        System.out.println("✨ " + GetApodo() + " aumenta su bendición a " + bendicion + "%.");
+        mensajeBendicion += ("✨ " + GetApodo() + " aumenta su bendición a " + bendicion + "%.\n");
+        
+        return mensajeBendicion;
     }
 
     @Override
-    public void cargarHabilidad() {
+    public String cargarHabilidad() {
+        
+        String mensajeHabilidad = "";
+        
         if (bendicion >= 100) {
             habilidad = new CastigoBendito();
-            System.out.println("🌟 ¡" + GetApodo() + " desbloqueó su habilidad suprema: " + habilidad.nombre + "!");
+            mensajeHabilidad += ("🌟 ¡" + GetApodo() + " desbloqueó su habilidad suprema: " + habilidad.nombre + "!\n");
+            this.cantHabilidadesInvocadas ++;
         }
+        
+        return mensajeHabilidad;
     }
 }

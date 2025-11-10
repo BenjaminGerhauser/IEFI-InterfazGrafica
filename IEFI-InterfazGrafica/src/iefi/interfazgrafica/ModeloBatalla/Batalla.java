@@ -3,14 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package iefi.interfazgrafica.ModeloBatalla;
+
 import java.util.Scanner;
 import iefi.interfazgrafica.ModeloPersonajes.Personaje;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author LucasV
  */
 public class Batalla {
+
     private int turno = 1;
     private Personaje heroe;
     private Personaje villano;
@@ -21,64 +24,58 @@ public class Batalla {
         this.villano = villano;
     }
 
-
-    public Object[] iniciarBatalla() {
-        System.out.println("⚔️  ¡Comienza la batalla entre " + heroe.GetApodo() + " y " + villano.GetApodo() + "!");
-        System.out.println("--------------------------------------------------");
-
-        while (heroe.estaVivo() && villano.estaVivo()) {
-            siguienteTurno();
-        }
-
-        String ganador = chequearVictoria();
-        Object[] info = new Object[]{heroe,villano,ganador,this.turnosEmpleados};
-        return info;
+    public int getTurno() {
+        return this.turno;
     }
 
+    public Personaje getHeroe() {
+        return this.heroe;
+    }
 
-    public void siguienteTurno() {
-        Scanner sc = new Scanner(System.in); 
+    public Personaje getVillano() {
+        return this.villano;
+    }
 
+    public void reiniciarTurnos() {
+        this.turno = 1;
+        this.turnosEmpleados = 0;
+    }
+
+    public void siguienteTurno(JTextArea txtEventos) {
         System.out.println("🔁 Turno " + turno + " ---------------------------");
 
         if (turno % 2 != 0) {
             // Turno del héroe
             System.out.println("🦸‍♂️ Turno de " + heroe.GetApodo());
-            heroe.atacar(heroe, villano);
+            txtEventos.setText(heroe.atacar(heroe, villano));
         } else {
             // Turno del villano
             System.out.println("😈 Turno de " + villano.GetApodo());
-            villano.atacar(villano, heroe);
+            txtEventos.setText(villano.atacar(villano, heroe));
         }
 
         mostrarEstado();
 
-
-        System.out.println("🔎 Presione ENTER para continuar al siguiente turno...");
-        sc.nextLine();
-
+        // incrementamos los contadores
         turno++;
         turnosEmpleados++;
     }
 
     public String chequearVictoria() {
-        System.out.println("🏁 La batalla ha terminado.");
+        String mensaje = "🏁 La batalla ha terminado.\n";
+
         if (heroe.estaVivo() && !villano.estaVivo()) {
-            System.out.println("🎉 ¡" + heroe.GetApodo() + " ha derrotado a " + villano.GetApodo() + " en " + turnosEmpleados + " turnos!");
-            return heroe.GetApodo();
+            mensaje += "🎉 ¡" + heroe.GetApodo() + " ha derrotado a " + villano.GetApodo() + " en " + turnosEmpleados + " turnos!";
         } else if (villano.estaVivo() && !heroe.estaVivo()) {
-            System.out.println("☠️  ¡" + villano.GetApodo() + " ha vencido a " + heroe.GetApodo() + " en " + turnosEmpleados + " turnos!");
-            return villano.GetApodo();
+            mensaje += "☠️  ¡" + villano.GetApodo() + " ha vencido a " + heroe.GetApodo() + " en " + turnosEmpleados + " turnos!";
         } else {
-            System.out.println("🤝 Ambos han caído al mismo tiempo. ¡Empate!");
-            return "Empate";
+            mensaje += "🤝 Ambos han caído al mismo tiempo. ¡Empate!";
         }
+
+        return mensaje;
     }
 
-    public void mostrarEstado() {
-        System.out.println("Estado actual:");
-        System.out.println(heroe.GetApodo() + " → Salud: " + heroe.GetSalud());
-        System.out.println(villano.GetApodo() + " → Salud: " + villano.GetSalud());
-        System.out.println("--------------------------------------------------");
+    public String mostrarEstado() {
+        return "Estado actual: \n" + heroe.GetApodo() + " → Salud: " + heroe.GetSalud() + "\n" + villano.GetApodo() + " → Salud: " + villano.GetSalud();
     }
 }

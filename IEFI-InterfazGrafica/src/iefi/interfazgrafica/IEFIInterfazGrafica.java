@@ -4,6 +4,8 @@
  */
 package iefi.interfazgrafica;
 
+import vistaConfiguracion.frmVistaConfiguracion;
+
 /**
  *
  * @author Benja
@@ -14,7 +16,25 @@ public class IEFIInterfazGrafica {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            // 🔹 Aplica el mismo look and feel del sistema operativo
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // 🔹 Crea y muestra la interfaz en el hilo de eventos de Swing
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            frmVistaConfiguracion ventana = new frmVistaConfiguracion();
+
+            // 🔹 Ajusta automáticamente el tamaño según los componentes
+            ventana.pack();
+
+            // 🔹 Centra la ventana en la pantalla
+            ventana.setLocationRelativeTo(null);
+
+            // 🔹 Muestra la ventana
+            ventana.setVisible(true);
+        });
     }
-    
 }

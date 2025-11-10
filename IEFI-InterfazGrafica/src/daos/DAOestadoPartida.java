@@ -108,7 +108,7 @@ public class DAOestadoPartida {
             }
         }
         catch (SQLException e) {
-            System.err.println("Error al insertar profesor: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
         return null;
     }
@@ -137,7 +137,7 @@ public class DAOestadoPartida {
                 return estado;
             }
         }catch (SQLException e) {
-            System.err.println("Error al insertar profesor: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
         return null;
     }

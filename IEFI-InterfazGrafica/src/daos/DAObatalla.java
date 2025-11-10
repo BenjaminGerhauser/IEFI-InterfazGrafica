@@ -84,7 +84,7 @@ public class DAObatalla {
                 lista.add(batalla);
             }
         }catch (SQLException e) {
-            System.err.println("Error al insertar profesor: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
         return lista;
     }

@@ -34,7 +34,7 @@ public class DAOreporte {
         return "No se registraron ataques.";
     }
 
-    // 2️⃣ 🔹 Batalla más larga (turnos + ganador)
+   
     public String obtenerBatallaMasLarga() {
         String sql = "SELECT b.id_batalla, b.turnos, p.apodo AS ganador "
                 + "FROM batallas b "
@@ -54,7 +54,7 @@ public class DAOreporte {
         return "No hay batallas registradas.";
     }
 
-    // 3️⃣ 🔹 Total de armas invocadas (por personaje)
+  
     public String obtenerArmasInvocadasPorPersonaje() {
         String sql = "SELECT nombre, apodo, armas_invocadas "
                 + "FROM personajes ORDER BY armas_invocadas DESC LIMIT 5";
@@ -80,7 +80,7 @@ public class DAOreporte {
         return resultado.toString();
     }
 
-    // 4️⃣ 🔹 Ataques supremos ejecutados (por personaje)
+    
     public String obtenerSupremosEjecutados() {
         String sql = "SELECT nombre, apodo, supremos_usados "
                 + "FROM personajes ORDER BY supremos_usados DESC LIMIT 5";
@@ -106,7 +106,7 @@ public class DAOreporte {
         return resultado.toString();
     }
 
-// 5️⃣ 🔹 Porcentaje de victorias por tipo
+
     public String obtenerPorcentajeVictoriasPorTipo() {
         String sql = "SELECT tipo, "
                 + "SUM(victorias) AS total_victorias, "

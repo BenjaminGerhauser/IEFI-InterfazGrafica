@@ -33,16 +33,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Historial de Partidas"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHistorialActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnEstadisticas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Estad&#xed;sticas"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEstadisticasActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnRanking">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ranking Personajes"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRankingActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

@@ -21,7 +21,7 @@ public class DAObatalla {
     public int guardar(modeloBatalla batalla){
         String sql = "INSERT INTO batallas (heroe_id, villano_id, ganador_id, turnos) VALUES (?, ?, ?, ?)";
         try (Connection conn = conexionBD.obtenerConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, batalla.getHeroeId());
             stmt.setInt(2, batalla.getVillanoId()); 
             if (batalla.getGanadorId() == null) {

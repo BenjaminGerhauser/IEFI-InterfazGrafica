@@ -472,9 +472,19 @@ public class frmBatalla extends javax.swing.JFrame {
         jMenu2.add(btnHistorial);
 
         btnEstadisticas.setText("Estadísticas");
+        btnEstadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEstadisticasActionPerformed(evt);
+            }
+        });
         jMenu2.add(btnEstadisticas);
 
         btnRanking.setText("Ranking Personajes");
+        btnRanking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRankingActionPerformed(evt);
+            }
+        });
         jMenu2.add(btnRanking);
 
         jMenuBar1.add(jMenu2);
@@ -568,6 +578,18 @@ public class frmBatalla extends javax.swing.JFrame {
         ventana.setLocationRelativeTo(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnHistorialActionPerformed
+
+    private void btnEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstadisticasActionPerformed
+        vistaReportes.frmEstadisticas ventana = new vistaReportes.frmEstadisticas();
+        ventana.setLocationRelativeTo(this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnEstadisticasActionPerformed
+
+    private void btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankingActionPerformed
+        vistaReportes.frmRanking ventana = new vistaReportes.frmRanking();
+        ventana.setLocationRelativeTo(this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnRankingActionPerformed
 
     /**
      * @param args the command line arguments

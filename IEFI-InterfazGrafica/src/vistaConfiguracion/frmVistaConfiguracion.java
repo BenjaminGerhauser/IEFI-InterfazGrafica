@@ -33,12 +33,18 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
 
         // 🔹 Evita deformaciones si cambian fuentes
         this.setResizable(false);
-        this.setSize(650, 400); 
+        this.setSize(650, 400);
 
         numBnedicion.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         numDenfensa.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         numFuerza.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         numVida.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+
+        /* valores por defecto de conmfiguracion*/
+        numVida.setValue(100);
+        numFuerza.setValue(15);
+        numDenfensa.setValue(8);
+
     }
 
     /**
@@ -106,6 +112,8 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
         lblDefensa.setText("Defensa");
 
         lblBendicion.setText("Bendicion");
+
+        numVida.setToolTipText("");
 
         btnEliminarPersonaje.setText("Eliminar Personaje");
         btnEliminarPersonaje.addActionListener(new java.awt.event.ActionListener() {
@@ -271,6 +279,20 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
 
             actualizarLista();
 
+            txtApodo.setText("");
+            
+            /* vuelta a valores por defecto de conmfiguracion */
+            numVida.setValue(100);
+            numFuerza.setValue(15);
+            numDenfensa.setValue(8);
+            
+            /* Cambio de heroe a personaje y viceversa */
+            if (cbTipoDePersonaje.getSelectedItem().equals("Heroe")){
+                cbTipoDePersonaje.setSelectedItem("Villano");
+            }else{
+                cbTipoDePersonaje.setSelectedItem("Heroe");
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
                     "Error al crear personaje: " + e.getMessage(),
@@ -327,20 +349,18 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         //Agregar personajes a la base de datos
-     
-        modelosBD.modeloPersonaje heroe = new modelosBD.modeloPersonaje(ctrlHeroe.personaje.GetApodo(),ctrlHeroe.personaje.GetApodo(), "Héroe", ctrlHeroe.personaje.GetSalud(), ctrlHeroe.personaje.GetAtaque(),ctrlHeroe.personaje.GetDefensa());
-        modelosBD.modeloPersonaje villano = new modelosBD.modeloPersonaje(ctrlVillano.personaje.GetApodo(),ctrlVillano.personaje.GetApodo(), "Villano",  ctrlVillano.personaje.GetSalud(), ctrlVillano.personaje.GetAtaque(),ctrlVillano.personaje.GetDefensa());
+        modelosBD.modeloPersonaje heroe = new modelosBD.modeloPersonaje(ctrlHeroe.personaje.GetApodo(), ctrlHeroe.personaje.GetApodo(), "Héroe", ctrlHeroe.personaje.GetSalud(), ctrlHeroe.personaje.GetAtaque(), ctrlHeroe.personaje.GetDefensa());
+        modelosBD.modeloPersonaje villano = new modelosBD.modeloPersonaje(ctrlVillano.personaje.GetApodo(), ctrlVillano.personaje.GetApodo(), "Villano", ctrlVillano.personaje.GetSalud(), ctrlVillano.personaje.GetAtaque(), ctrlVillano.personaje.GetDefensa());
         try {
             daos.DAOpersonaje DAOpersonaje = new daos.DAOpersonaje();
             int idHeroe = DAOpersonaje.guardar(heroe);
             int idVillano = DAOpersonaje.guardar(villano);
-            
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-
 
         int cantidadBatallas = Integer.parseInt(cbCantidadBatallas.getSelectedItem().toString());
 
@@ -355,21 +375,19 @@ public class frmVistaConfiguracion extends javax.swing.JFrame {
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         daos.DAOestadoPartida DAOestadoPartida = new daos.DAOestadoPartida();
         modelosBD.modeloEstadoPartida estadoPartida = DAOestadoPartida.cargarUltima();
-        
+
         daos.DAOpersonaje DAOpersonaje = new daos.DAOpersonaje();
         modelosBD.modeloPersonaje heroe = DAOpersonaje.buscarPorId(estadoPartida.getHeroeId());
         modelosBD.modeloPersonaje villano = DAOpersonaje.buscarPorId(estadoPartida.getVillanoId());
         String apodoHeroe = heroe.getApodo();
         String apodoVillano = villano.getApodo();
-        
+
         ControladorPersonajes ctrlHeroeCargar = new ControladorPersonajes(new Heroe());
-        ctrlHeroeCargar.crearPersonaje(apodoHeroe,estadoPartida.getVidaHeroe(),estadoPartida.getDefensaHeroe(),estadoPartida.getAtaqueHeroe(),estadoPartida.getBendicionHeroe());
-        
+        ctrlHeroeCargar.crearPersonaje(apodoHeroe, estadoPartida.getVidaHeroe(), estadoPartida.getDefensaHeroe(), estadoPartida.getAtaqueHeroe(), estadoPartida.getBendicionHeroe());
 
         ControladorPersonajes ctrlVillanoCargar = new ControladorPersonajes(new Villano());
-        ctrlVillanoCargar.crearPersonaje(apodoVillano,estadoPartida.getVidaVillano(),estadoPartida.getDefensaVillano(),estadoPartida.getAtaqueVillano(),estadoPartida.getBendicionVillano());
-        
-        
+        ctrlVillanoCargar.crearPersonaje(apodoVillano, estadoPartida.getVidaVillano(), estadoPartida.getDefensaVillano(), estadoPartida.getAtaqueVillano(), estadoPartida.getBendicionVillano());
+
         javax.swing.SwingUtilities.invokeLater(() -> {
             this.setVisible(false);
             frmBatalla ventana = new frmBatalla(ctrlHeroeCargar, ctrlVillanoCargar, 1, chbActivarAtaqueSupremo.isSelected(), estadoPartida.getVillanoId(), estadoPartida.getHeroeId());
